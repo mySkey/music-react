@@ -11,9 +11,13 @@ class App extends Component {
   //   // this.handleLogoutClick = this.handleLogoutClick.bind(this);
   //   // this.state = { isLoggedIn: false };
   // }
-  state={
-    me:{},
-    num:0
+  
+  constructor(props){
+    super(props)
+    this.state = {
+      me: {},
+      num: 0
+    }
   }
   componentDidMount(){
     

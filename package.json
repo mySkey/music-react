@@ -35,6 +35,7 @@
     "react": "^16.4.2",
     "react-dev-utils": "^5.0.2",
     "react-dom": "^16.4.2",
+    "react-loadable": "^5.5.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
     "resolve": "1.6.0",
@@ -95,6 +96,7 @@
     "extends": "react-app"
   },
   "devDependencies": {
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "redux": "^4.0.0",
     "redux-devtools": "^3.4.1",
     "webpack-bundle-analyzer": "^2.13.1"

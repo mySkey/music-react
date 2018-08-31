@@ -61,5 +61,28 @@ npm run eject
 
 6.react-router 4.0 路由懒加载
 
-  
- 
+  参考文档https://segmentfault.com/a/1190000011128817
+
+  1.安装babel-plugin-syntax-dynamic-import
+    在.babelrc文件的plungins中加上"syntax-dynamic-import"
+
+  2.安装 react-loadable
+
+import Loadable from 'react-loadable';
+const MyLoadingComponent = ({ isLoading, error }) => {
+  // Handle the loading state
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  // Handle the error state
+  else if (error) {
+    return <div>Sorry, there was a problem loading the page.</div>;
+  }
+  else {
+    return null;
+  }
+};
+const Home = Loadable({
+  loader: () => import('../page/home/Home.js'),
+  loading: MyLoadingComponent
+});
