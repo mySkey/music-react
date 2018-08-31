@@ -3,6 +3,7 @@ import './App.css';
 
 import {store,action} from './store/store.js'
 
+import MyRouter from './routers/index.js'
 class App extends Component {
   // constructor(props) {
   //   super(props);
@@ -46,6 +47,7 @@ class App extends Component {
         <div>{this.state.num}</div>
         <div onClick={()=>this.add()}>增加</div>
         <div onClick={()=>this.reduce()}>减少</div>
+        <MyRouter></MyRouter>
       </div>
     );
   }
