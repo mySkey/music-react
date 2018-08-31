@@ -33,7 +33,6 @@ npm run eject
   安装  npm install --save redux
 	npm install --save-dev redux-devtools
 
-  https://github.com/mySkey/redux-demo
 
 5.react中使用路由
 
