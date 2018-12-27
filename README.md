@@ -1,72 +1,77 @@
-1.安装环境
-npm install -g create-react-app
+### 1.安装环境
+* npm install -g create-react-app
 
-create-react-app '项目名'
+* create-react-app '项目名'
 
-npm install
+* npm install
 
-npm start
+* npm start
 
-2.打开webpack配置
+### 2.打开webpack配置
 
-npm run eject
+* npm run eject
 
-3.关于打包问题
+### 3.关于打包问题
 
-  不生成map文件，prod文件57行注释掉
+  * 不生成map文件，prod文件57行注释掉
 
-  打包生成打包报告
+  * 打包生成打包报告
 
-  npm install webpack-bundle-analyzer --save-dev
+  * npm install webpack-bundle-analyzer --save-dev
 
-  const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+```javascript
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-  plugins:[
-     ...
-     new BundleAnalyzerPlugin()
-  ]
+plugins:[
+    ...
+    new BundleAnalyzerPlugin()
+]
 
-  "analyze": "source-map-explorer dist/static/js/main.*"
+"analyze": "source-map-explorer dist/static/js/main.*"
+```
 
-4.使用redux
+### 4.使用redux
 
-  安装  npm install --save redux
-	npm install --save-dev redux-devtools
-
-
-5.react中使用路由
-
-  npm install --save react-router-dom
-
-  新建router.js，也是一个react组件
-
-  import React from 'react'
-  import { HashRouter as Router, Route, Switch } from 'react-router-dom'
-
-  import Home from '../page/home/Home.js'
-  import Login from '../page/login/Login.js'
-  import Register from '../page/register/Register.js'
+  * 安装  npm install --save redux
+	* npm install --save-dev redux-devtools
 
 
-  export default ()=>(
-    <Router>
-      <Switch>
-        <Route path="/" exact component={Home}></Route>
-        <Route path="/login" component={Login}></Route>
-        <Route path="/register" component={Register}></Route>
-      </Switch>
-    </Router>
-  )
+### 5.react中使用路由
 
-6.react-router 4.0 路由懒加载
+  * npm install --save react-router-dom
 
-  参考文档https://segmentfault.com/a/1190000011128817
+  * 新建router.js，也是一个react组件
 
-  1.安装babel-plugin-syntax-dynamic-import
-    在.babelrc文件的plungins中加上"syntax-dynamic-import"
+```javascript
+import React from 'react'
+import { HashRouter as Router, Route, Switch } from 'react-router-dom'
 
-  2.安装 react-loadable
+import Home from '../page/home/Home.js'
+import Login from '../page/login/Login.js'
+import Register from '../page/register/Register.js'
 
+
+export default ()=>(
+  <Router>
+    <Switch>
+      <Route path="/" exact component={Home}></Route>
+      <Route path="/login" component={Login}></Route>
+      <Route path="/register" component={Register}></Route>
+    </Switch>
+  </Router>
+)
+```
+
+### 6.react-router 4.0 路由懒加载
+
+  * <a href="https://segmentfault.com/a/1190000011128817" target="_blank">路由懒加载参考文档</a>
+
+  * 1.安装babel-plugin-syntax-dynamic-import
+    > 在.babelrc文件的plungins中加上"syntax-dynamic-import"
+
+  * 2.安装 react-loadable
+
+```javascript
 import Loadable from 'react-loadable';
 const MyLoadingComponent = ({ isLoading, error }) => {
   // Handle the loading state
@@ -85,5 +90,6 @@ const Home = Loadable({
   loader: () => import('../page/home/Home.js'),
   loading: MyLoadingComponent
 });
+```
 
  
