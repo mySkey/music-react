@@ -1,6 +1,6 @@
 import React,{ Component } from 'react'
 
-import { store } from '../../store/store.js'
+import { store } from '@/store/store.js'
 export default class Login extends Component {
   constructor(props){
     super(props)

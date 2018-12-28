@@ -24,11 +24,11 @@ const Home = Loadable({
   loading: MyLoadingComponent
 });
 const Login = Loadable({
-  loader: () => import('../page/login/Login.js'),
+  loader: () => import('../page/user/login/Login.js'),
   loading: MyLoadingComponent
 });
 const Register = Loadable({
-  loader: () => import('../page/register/Register.js'),
+  loader: () => import('../page/user/register/Register.js'),
   loading: MyLoadingComponent
 });
 

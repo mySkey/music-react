@@ -1,6 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+
+import '@/common/ajax.js';
+import '@/common/common.js';
+
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
