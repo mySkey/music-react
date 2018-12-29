@@ -22,20 +22,17 @@ let player = (state = musics, action)=>{
       return Object.assign({}, state, {
         list: action.list
       })
-      break;
     case 'play':
       global.audio.src = action.src
       global.audio.play()
       return Object.assign({}, state, {
         status: 1
       })
-      break;
     case 'pause':
       global.audio.pause()
       return Object.assign({}, state, {
         status: 2
       })
-      break;
     default:
       break;
   }

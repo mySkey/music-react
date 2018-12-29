@@ -12,7 +12,7 @@ global.ajax = {
       xhr.open("GET", url, true)
       xhr.send()
       xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4 && xhr.status == 200) {
+        if (xhr.readyState === 4 && xhr.status === 200) {
           try {
             //let response = JSON.parse(xhr.responseText)
             resolve(xhr.responseText)
@@ -29,7 +29,7 @@ global.ajax = {
       xhr.open("POST", url, true)
       parames ? xhr.send(parames) : xhr.send()
       xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4 && xhr.status == 200) {
+        if (xhr.readyState === 4 && xhr.status === 200) {
           try {
             let response = JSON.parse(xhr.responseText)
             resolve(response)
