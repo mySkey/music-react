@@ -1,6 +1,8 @@
 .item{
   padding: 0 20px;
   margin-top: 15px;
+  text-align: left;
+  font-size: 12px;
 }
 .item img{
   width: 40px;
@@ -9,5 +11,6 @@
 }
 .info{
   width: 100%;
-  
+  padding-left: 15px;
+  align-self: center;
 }

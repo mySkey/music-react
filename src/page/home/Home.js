@@ -1,5 +1,6 @@
 import React,{ Component } from 'react'
 import './Home.css';
+import Player from '@/components/Player.js'
 
 import { store } from '@/store/store.js'
 import { list, i_resource, a_resource } from '@/assets/music.js'
@@ -7,7 +8,7 @@ export default class Home extends Component{
   constructor(props){
     super(props)
     this.state = {
-
+      status: 0
     }
   }
   render(){
@@ -26,13 +27,16 @@ export default class Home extends Component{
             )
           })
         }
+        {
+          this.state.status > 0 ? <Player></Player> : ''
+        }
       </div>
     )
   }
   componentDidMount(){
     store.player.dispatch({type:'list', list})
-    console.log(store.player.getState())
-    this.getList()
+    console.log(store.player.getState().status)
+    //this.getList()
   }
   play(v){
     global.audio.src = a_resource+v.musicUrl
