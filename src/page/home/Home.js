@@ -27,24 +27,16 @@ export default class Home extends Component{
             )
           })
         }
-        {
-          this.state.status > 0 ? <Player></Player> : ''
-        }
+        <Player></Player>
       </div>
     )
   }
   componentDidMount(){
     store.player.dispatch({type:'list', list})
-    console.log(store.player.getState().status)
-    //this.getList()
+
   }
   play(v){
     global.audio.src = a_resource+v.musicUrl
     global.audio.play();
-  }
-  getList(){
-    global.ajax.get('http://api.blog.22family.com/api/lrc', { music: '起风了' }).then(res=>{
-      console.log(global.common.analysis(res))
-    })
   }
 }

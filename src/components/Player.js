@@ -6,7 +6,9 @@ import { store } from '@/store/store.js'
 export default class Player extends Component{
   constructor(props){
     super(props)
-    this.state = {}
+    this.state = {
+      
+    }
   }
   render(){
     return(
@@ -25,8 +27,10 @@ export default class Player extends Component{
   }
   componentDidMount() {
     store.player.subscribe(() => {
-      this.state.player = store.player.getState();
-      //console.log(this.state)
+      this.setState({
+        player: 1
+      })
+      console.log(this.state)
     });
   }
 }
