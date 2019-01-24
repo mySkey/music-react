@@ -8,6 +8,8 @@ let counter = (state, action) => {
       return state + 1
     case 'reduce':
       return state - 1
+    case 'set':
+      return action.value
     default:
       return state
   }

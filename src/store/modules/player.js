@@ -17,26 +17,17 @@ let musics = {
 
 let player = (state = musics, action)=>{
   if (typeof state === 'undefined') {
-    return musics
+    return state
   }
   switch (action.type) {
     case 'list':
-      return Object.assign({}, state, {
-        list: action.list
-      })
+      return state
     case 'play':
-      global.audio.src = action.src
-      global.audio.play()
-      return Object.assign({}, state, {
-        status: 1
-      })
+      return state
     case 'pause':
-      global.audio.pause()
-      return Object.assign({}, state, {
-        status: 2
-      })
+      return state
     default:
-      break;
+      return state;
   }
 }
 

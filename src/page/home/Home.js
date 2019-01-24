@@ -1,10 +1,28 @@
 import React,{ Component } from 'react'
+import { connect } from 'react-redux'
 import './Home.css';
-import Player from '@/components/Player.js'
 
-import { store } from '@/store/store.js'
 import { list, i_resource, a_resource } from '@/assets/music.js'
-export default class Home extends Component{
+
+const mapStateToProps = (state) => {
+  return {
+    counter: state.counter
+  }
+}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    add(){
+      dispatch({ type: 'add' });
+    },
+    reduce(){
+      dispatch({ type: 'reduce' })
+    },
+    set(value){
+      dispatch({ type: 'set', value })
+    }
+  };
+}
+class Home extends Component{
   constructor(props){
     super(props)
     this.state = {
@@ -17,26 +35,26 @@ export default class Home extends Component{
         {
           list.map((v,k)=>{
             return(
-              <div onClick={(e)=>this.play(v, e)} className="item df" key={k}>
-                <img src={i_resource + v.imgUrl} alt="歌曲封面" />
-                <div className="info">
-                  <h4>{v.sing}</h4>
+              <div className="item df" key={k}>
+                <img onClick={()=>this.toDetail()} src={i_resource + v.imgUrl} alt="歌曲封面" />
+                <div onClick={this.props.add} className="info">
+                  <h4>{v.sing}{this.props.counter}</h4>
                   <div>{v.singer}</div>
                 </div>
               </div>
             )
           })
         }
-        <Player></Player>
       </div>
     )
   }
   componentDidMount(){
-    store.player.dispatch({type:'list', list})
 
   }
-  play(v){
-    global.audio.src = a_resource+v.musicUrl
-    global.audio.play();
+  toDetail(){
+    this.props.reduce();
+    this.props.history.push('/detail');
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

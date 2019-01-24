@@ -16,7 +16,7 @@ const Home = Loadable({
   loading: MyLoadingComponent
 });
 const Detail = Loadable({
-  loder: () => import('../page/music/detail/Detail.js'),
+  loader: () => import('../page/music/detail/Detail.js'),
   loading: MyLoadingComponent
 })
 const Login = Loadable({

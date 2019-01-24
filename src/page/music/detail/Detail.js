@@ -1,7 +1,13 @@
 import React, { Component } from 'react'
 import  './Detail.css'
 
-export default class Detail extends Component{
+import { connect } from 'react-redux'
+const mapStateToProps = (state) => {
+  return {
+    counter: state
+  }
+}
+class Detail extends Component{
   constructor(props){
     super(props)
     this.state = {
@@ -16,7 +22,7 @@ export default class Detail extends Component{
     )
   }
   componentWillMount(){
-
+    console.log(this.props.counter)
   }
   getLrc(){
     global.ajax.get('http://api.blog.22family.com/api/lrc', { music: '起风了' }).then(res => {
@@ -24,3 +30,5 @@ export default class Detail extends Component{
     })
   }
 }
+
+export default connect(mapStateToProps)(Detail)

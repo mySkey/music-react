@@ -1,9 +1,13 @@
 // 管理个人信息状态
-let myInfo = { name: '邓boss', age: '23' }
+let info = { 
+  name: '邓boss',
+  age: '23',
+  position: '四川'
+}
 
-let userInfo = (state, action) => {
+let myInfo = (state, action) => {
   if (typeof state === 'undefined') {
-    return myInfo
+    return info
   }
   switch (action.type) {
     case 'GET':
@@ -17,4 +21,4 @@ let userInfo = (state, action) => {
   }
 }
 
-export default userInfo;
+export default myInfo;
