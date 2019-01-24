@@ -11,9 +11,7 @@ const MyLoadingComponent = ({ isLoading, error }) => {
     return null;
   }
 };
-function getComponent (url='') {
-  
-}
+
 const Home = Loadable({
   loader: () => import('../page/home/Home.js'),
   loading: MyLoadingComponent
