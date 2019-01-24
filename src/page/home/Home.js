@@ -3,30 +3,12 @@ import { connect } from 'react-redux'
 import './Home.css';
 
 import { list, i_resource, a_resource } from '@/assets/music.js'
-
-const mapStateToProps = (state) => {
-  return {
-    counter: state.counter
-  }
-}
-const mapDispatchToProps = (dispatch) => {
-  return {
-    add(){
-      dispatch({ type: 'add' });
-    },
-    reduce(){
-      dispatch({ type: 'reduce' })
-    },
-    set(value){
-      dispatch({ type: 'set', value })
-    }
-  };
-}
+import { mapStateToProps, mapDispatchToProps } from '@/store/modules/counter.js'
 class Home extends Component{
   constructor(props){
     super(props)
     this.state = {
-      status: 0
+      
     }
   }
   render(){
@@ -49,7 +31,7 @@ class Home extends Component{
     )
   }
   componentDidMount(){
-
+    console.log(a_resource)
   }
   toDetail(){
     this.props.reduce();

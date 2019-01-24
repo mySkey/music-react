@@ -10,15 +10,24 @@ let myInfo = (state, action) => {
     return info
   }
   switch (action.type) {
-    case 'GET':
-      return state
-    case 'EDIT':
-      let { name, age } = action
-      state = { name, age }
-      return state
+    case 'setName':
+      return Object.assign({}, state, { name: action.name })
     default:
       return state
   }
 }
 
-export default myInfo;
+const mapStateToProps = state => {
+  return {
+    myInfo: state.myInfo
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return{
+    setName(name) {
+      dispatch({ type: 'setName', name })
+    }
+  }
+}
+export { myInfo, mapStateToProps, mapDispatchToProps }

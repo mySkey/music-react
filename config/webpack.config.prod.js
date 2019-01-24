@@ -35,6 +35,9 @@ if (env.stringified['process.env'].NODE_ENV !== '"production"') {
   throw new Error('Production builds must have NODE_ENV=production.');
 }
 
+function resolve(dir) {
+  return path.join(__dirname, '..', dir)
+}
 // Note: defined here because it will be used more than once.
 const cssFilename = 'static/css/[name].[contenthash:8].css';
 
@@ -94,6 +97,7 @@ module.exports = {
       
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
+      '@': resolve('src'),
       'react-native': 'react-native-web',
     },
     plugins: [

@@ -2,11 +2,7 @@ import React, { Component } from 'react'
 import  './Detail.css'
 
 import { connect } from 'react-redux'
-const mapStateToProps = (state) => {
-  return {
-    counter: state
-  }
-}
+import { mapStateToProps, mapDispatchToProps } from '@/store/modules/myinfo.js'
 class Detail extends Component{
   constructor(props){
     super(props)
@@ -17,12 +13,13 @@ class Detail extends Component{
   render(){
     return(
       <div className="detail" style={this.state.styleObj}>
-
+        <h4>{this.props.myInfo.name}</h4>
+        <p onClick={() => this.props.setName('mySkey')}>设置名字</p>
       </div>
     )
   }
   componentWillMount(){
-    console.log(this.props.counter)
+    console.log(this.props.myInfo)
   }
   getLrc(){
     global.ajax.get('http://api.blog.22family.com/api/lrc', { music: '起风了' }).then(res => {
@@ -31,4 +28,4 @@ class Detail extends Component{
   }
 }
 
-export default connect(mapStateToProps)(Detail)
+export default connect(mapStateToProps, mapDispatchToProps)(Detail)

@@ -31,4 +31,4 @@ let player = (state = musics, action)=>{
   }
 }
 
-export default player
+export { player }

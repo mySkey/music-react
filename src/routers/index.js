@@ -11,10 +11,13 @@ const MyLoadingComponent = ({ isLoading, error }) => {
     return null;
   }
 };
+function getComponent (url='') {
+  
+}
 const Home = Loadable({
   loader: () => import('../page/home/Home.js'),
   loading: MyLoadingComponent
-});
+})
 const Detail = Loadable({
   loader: () => import('../page/music/detail/Detail.js'),
   loading: MyLoadingComponent

@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import './Player.css'
 
-import { store } from '@/store/store.js'
-
 export default class Player extends Component{
   constructor(props){
     super(props)
@@ -26,11 +24,6 @@ export default class Player extends Component{
     )
   }
   componentDidMount() {
-    store.player.subscribe(() => {
-      this.setState({
-        player: 1
-      })
-      console.log(this.state)
-    });
+
   }
 }

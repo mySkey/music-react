@@ -15,4 +15,22 @@ let counter = (state, action) => {
   }
 }
 
-export default counter;
+const mapStateToProps = (state) => {
+  return {
+    counter: state.counter
+  }
+}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    add() {
+      dispatch({ type: 'add' });
+    },
+    reduce() {
+      dispatch({ type: 'reduce' })
+    },
+    set(value) {
+      dispatch({ type: 'set', value })
+    }
+  };
+}
+export { counter, mapStateToProps, mapDispatchToProps }
