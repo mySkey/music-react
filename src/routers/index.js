@@ -4,38 +4,31 @@ import { HashRouter as Router, Route, Switch } from 'react-router-dom'
 import Loadable from 'react-loadable';
 const MyLoadingComponent = ({ isLoading, error }) => {
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>; // 全局loading组件，页面加载时
   }else if (error) {
-    return <div>Sorry, there was a problem loading the page.</div>;
+    return <div>Sorry, there was a problem loading the page.</div>;   // 全局
   }else {
     return null;
   }
 };
 
-const Home = Loadable({
-  loader: () => import('../page/home/Home.js'),
-  loading: MyLoadingComponent
-})
-const Detail = Loadable({
-  loader: () => import('../page/music/detail/Detail.js'),
-  loading: MyLoadingComponent
-})
-const Login = Loadable({
-  loader: () => import('../page/user/login/Login.js'),
-  loading: MyLoadingComponent
-});
-const Register = Loadable({
-  loader: () => import('../page/user/register/Register.js'),
-  loading: MyLoadingComponent
-});
 
+const routes = [
+  { path: '/', name: 'home', component: () => import('../page/home/Home.js') },
+  { path: '/login', name: 'login', component: () => import('../page/user/login/Login.js') },
+  { path: '/register', name: 'register', component: () => import('../page/user/register/Register.js') },
+  { path: '/detail', name: 'detail', component: () => import('../page/music/detail/Detail.js') },
+]
 export default ()=>(
   <Router>
     <Switch>
-      <Route path="/" exact component={Home}></Route>
-      <Route path="/login" component={Login}></Route>
-      <Route path="/register" component={Register}></Route>
-      <Route path="/detail" component={Detail}></Route>
+      {
+        routes.map(({path, name, component})=>{
+          return (
+            <Route path={path} key={name} exact component={Loadable({ loader: component, loading: MyLoadingComponent })}></Route>
+          )
+        })
+      }
     </Switch>
   </Router>
 )
