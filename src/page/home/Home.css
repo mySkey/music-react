@@ -1,16 +1,13 @@
-.item{
-  padding: 0 20px;
-  margin-top: 15px;
-  text-align: left;
-  font-size: 12px;
-}
-.item img{
-  width: 40px;
-  height: 40px;
-  border-radius: 4px;
-}
-.info{
+.nav-list{
   width: 100%;
-  padding-left: 15px;
-  align-self: center;
+  height: 3rem;
+  padding: 0.5rem 3rem;
+  border-top: 1px solid #eee;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+.nav-item{
+  color: #999;
+  font-size: 0.6rem;
 }

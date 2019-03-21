@@ -1,41 +1,53 @@
 import React,{ Component } from 'react'
 import { connect } from 'react-redux'
 import './Home.css';
-
-import { list, i_resource, a_resource } from '@/assets/music.js'
 import { mapStateToProps, mapDispatchToProps } from '@/store/modules/counter.js'
+import HomeRoute from '@/routers/home.js'
 class Home extends Component{
-  constructor(props){
-    super(props)
-    this.state = {
-      
-    }
-  }
   render(){
     return (
       <div>
+        <HomeRoute></HomeRoute>
+        <div className="nav-list df-j-b">
         {
-          list.map((v,k)=>{
-            return(
-              <div className="item df" key={k}>
-                <img onClick={()=>this.toDetail()} src={i_resource + v.imgUrl} alt="歌曲封面" />
-                <div onClick={this.props.add} className="info">
-                  <h4>{v.sing}{this.props.counter}</h4>
-                  <div>{v.singer}</div>
-                </div>
+          this.state.navList.map((v,k)=>{
+            return (
+              <div onClick={()=>this.changeNav(v,k)} className="nav-item" key={k}>
+                <i className={"iconfont icon-" + v.icon}></i>
+                <div>{v.name}</div>
               </div>
             )
           })
         }
+        </div>
       </div>
     )
   }
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      currentNav: 0,
+      navList: [
+        { name: '音乐', icon: 'music', path: '/music',  },
+        { name: '电台', icon: 'fm', path: '/fm',  },
+        { name: '新闻', icon: 'news', path: '/news',  },
+      ]
+    }
+  }
   componentDidMount(){
-    console.log(a_resource)
+    
   }
   toDetail(){
     this.props.reduce();
     this.props.history.push('/detail');
+  }
+  handleChangeIndex(index){
+    console.log(index)
+  }
+  changeNav(v, k){
+    console.log(v,k)
+    this.props.history.replace(v.path)
   }
 }
 
