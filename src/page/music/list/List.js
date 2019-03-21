@@ -6,6 +6,7 @@ class Home extends Component {
   render() {
     return (
       <div>
+        123
         <SwipeableViews onChangeIndex={this.handleChangeIndex}>
           <div>1</div>
           <div>2</div>

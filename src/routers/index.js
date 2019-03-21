@@ -13,22 +13,12 @@ const MyLoadingComponent = ({ isLoading, error }) => {
 };
 
 
-const routes = [
-  { path: '/', name: 'home', component: () => import('@/page/home/Home.js') },
-  { path: '/login', name: 'login', component: () => import('@/page/user/login/Login.js') },
-  { path: '/register', name: 'register', component: () => import('@/page/user/register/Register.js') },
-  { path: '/detail', name: 'detail', component: () => import('@/page/music/detail/Detail.js') },
-]
 export default ()=>(
   <Router>
     <Switch>
-      {
-        routes.map(({path, name, component})=>{
-          return (
-            <Route exact path={path} key={name} exact component={Loadable({ loader: component, loading: MyLoadingComponent })}></Route>
-          )
-        })
-      }
+      <Route path="/" component={Loadable({ loader: () => import('@/page/home/Home.js'), loading: MyLoadingComponent })}></Route>
+      <Route path="/login" component={Loadable({ loader: () => import('@/page/user/login/Login.js'), loading: MyLoadingComponent })}></Route>
+      <Route path="/register" component={Loadable({ loader: () => import('@/page/user/register/Register.js'), loading: MyLoadingComponent })}></Route>
     </Switch>
   </Router>
 )

@@ -2,6 +2,7 @@ import React,{ Component } from 'react'
 import { connect } from 'react-redux'
 import './Home.css';
 import { mapStateToProps, mapDispatchToProps } from '@/store/modules/counter.js'
+import { Route } from 'react-router-dom'
 
 import Music from '@/page/music/list/List.js'
 import Fm from '@/page/fm/list/List.js'
@@ -23,9 +24,9 @@ class Home extends Component{
           })
         }
         </div>
-        <Music Style='display:none;'></Music>
-        <Fm className={this.state.currentNav === 1 ? 'nav-show' : 'nav-hidden'}></Fm>
-        <News className={this.state.currentNav === 2 ? 'nav-show' : 'nav-hidden'}></News>
+        <Route path="/music" component={Music}></Route>
+        <Route path="/fm" component={Fm}></Route>
+        <Route path="/news" component={News}></Route>
       </div>
     )
   }
@@ -52,6 +53,7 @@ class Home extends Component{
     console.log(index)
   }
   changeNav(v, k){
+    this.props.history.replace(v.path)
     this.setState({
       currentNav: k
     })
