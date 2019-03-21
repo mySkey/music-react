@@ -29,9 +29,9 @@ class Home extends Component{
     this.state = {
       currentNav: 0,
       navList: [
-        { name: '音乐', icon: 'music', path: '/music',  },
-        { name: '电台', icon: 'fm', path: '/fm',  },
-        { name: '新闻', icon: 'news', path: '/news',  },
+        { path: '/music', name: '音乐', icon: 'music',   },
+        { path: '/fm', name: '电台', icon: 'fm',   },
+        { path: '/news', name: '新闻', icon: 'news',  },
       ]
     }
   }

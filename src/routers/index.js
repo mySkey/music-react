@@ -25,7 +25,7 @@ export default ()=>(
       {
         routes.map(({path, name, component})=>{
           return (
-            <Route path={path} key={name} exact component={Loadable({ loader: component, loading: MyLoadingComponent })}></Route>
+            <Route exact path={path} key={name} exact component={Loadable({ loader: component, loading: MyLoadingComponent })}></Route>
           )
         })
       }

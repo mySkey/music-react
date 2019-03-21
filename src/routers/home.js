@@ -14,7 +14,9 @@ const MyLoadingComponent = ({ isLoading, error }) => {
 
 
 const routes = [
-  { path: '/', name: 'music', component: () => import('@/page/music/list/List.js') }
+  { path: '/music', name: 'music', component: () => import('@/page/music/list/List.js') },
+  { path: '/fm', name: 'fm', component: () => import('@/page/fm/list/List.js') },
+  { path: '/news', name: 'news', component: () => import('@/page/news/list/List.js') },
 ]
 export default () => (
   <Router>
