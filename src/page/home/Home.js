@@ -2,12 +2,15 @@ import React,{ Component } from 'react'
 import { connect } from 'react-redux'
 import './Home.css';
 import { mapStateToProps, mapDispatchToProps } from '@/store/modules/counter.js'
-import HomeRoute from '@/routers/home.js'
+
+import Music from '@/page/music/list/List.js'
+import Fm from '@/page/fm/list/List.js'
+import News from '@/page/news/list/List.js'
+
 class Home extends Component{
   render(){
     return (
       <div>
-        <HomeRoute></HomeRoute>
         <div className="nav-list df-j-b">
         {
           this.state.navList.map((v,k)=>{
@@ -20,6 +23,9 @@ class Home extends Component{
           })
         }
         </div>
+        <Music Style='display:none;'></Music>
+        <Fm className={this.state.currentNav === 1 ? 'nav-show' : 'nav-hidden'}></Fm>
+        <News className={this.state.currentNav === 2 ? 'nav-show' : 'nav-hidden'}></News>
       </div>
     )
   }
@@ -46,8 +52,9 @@ class Home extends Component{
     console.log(index)
   }
   changeNav(v, k){
-    console.log(v,k)
-    this.props.history.replace(v.path)
+    this.setState({
+      currentNav: k
+    })
   }
 }
 
