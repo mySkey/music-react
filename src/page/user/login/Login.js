@@ -1,6 +1,5 @@
 import React,{ Component } from 'react'
 
-import { store } from '@/store/store.js'
 export default class Login extends Component {
   constructor(props){
     super(props)
@@ -9,9 +8,9 @@ export default class Login extends Component {
     }
   }
   componentDidMount(){
-    console.log(store.counter.getState())
+    
     this.setState({
-      num: store.counter.getState() 
+      num: 1
     })
   }
   render() {

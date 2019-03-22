@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 
 import '@/common/ajax.js';
 import '@/common/common.js';
+import '@/common/style.css';
 
 import { Provider } from 'react-redux';
 import store from './store/store.js'

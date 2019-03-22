@@ -1,32 +1,33 @@
 import React,{ Component } from 'react'
+import { Loadable, MyLoadingComponent } from '@/routers/LazyLoad.js'
 import { connect } from 'react-redux'
-import './Home.css';
+import style from './Home.css';
 import { mapStateToProps, mapDispatchToProps } from '@/store/modules/counter.js'
-import { Route } from 'react-router-dom'
+import { Route, Redirect, Switch } from 'react-router-dom'
 
-import Music from '@/page/music/list/List.js'
-import Fm from '@/page/fm/list/List.js'
-import News from '@/page/news/list/List.js'
 
 class Home extends Component{
   render(){
     return (
       <div>
-        <div className="nav-list df-j-b">
+        <div className={[style.navList, 'df-j-b'].join(' ')}>
         {
           this.state.navList.map((v,k)=>{
             return (
-              <div onClick={()=>this.changeNav(v,k)} className="nav-item" key={k}>
+              <div onClick={() => this.changeNav(v, k)} className={[style.navItem, k === this.state.currentNav ? style.itemShow : ''].join(' ')} key={k}>
                 <i className={"iconfont icon-" + v.icon}></i>
-                <div>{v.name}</div>
+                <div className={style.navName}>{v.name}</div>
               </div>
             )
           })
         }
         </div>
-        <Route path="/music" component={Music}></Route>
-        <Route path="/fm" component={Fm}></Route>
-        <Route path="/news" component={News}></Route>
+        <Switch>
+          <Route path="/app/music" component={Loadable({ loader: () => import('@/page/music/list/List.js'), loading: MyLoadingComponent })}></Route>
+          <Route path="/app/fm" component={Loadable({ loader: () => import('@/page/fm/list/List.js'), loading: MyLoadingComponent })}></Route>
+          <Route path="/app/news" component={Loadable({ loader: () => import('@/page/news/list/List.js'), loading: MyLoadingComponent })}></Route>
+          <Redirect exact from="/app" to="/app/music" />
+        </Switch>
       </div>
     )
   }
@@ -36,15 +37,32 @@ class Home extends Component{
     this.state = {
       currentNav: 0,
       navList: [
-        { path: '/music', name: '音乐', icon: 'music',   },
-        { path: '/fm', name: '电台', icon: 'fm',   },
-        { path: '/news', name: '新闻', icon: 'news',  },
+        { path: '/app/music', name: '音乐', icon: 'music',   },
+        { path: '/app/fm', name: '电台', icon: 'fm',   },
+        { path: '/app/news', name: '新闻', icon: 'news',  },
       ]
     }
   }
-  componentDidMount(){
+  componentWillMount(){
     
   }
+  componentDidMount(){
+    this.state.navList.forEach((v,k)=>{
+      if (v.path === this.props.location.pathname){
+        this.setState({ currentNav: k })
+      }
+    })
+  }
+  componentWillUpdate() {
+
+  }
+  componentDidUpdate(){
+
+  }
+  componentWillUnmount(){
+
+  }
+  
   toDetail(){
     this.props.reduce();
     this.props.history.push('/detail');
