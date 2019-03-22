@@ -14,7 +14,7 @@ class Home extends Component{
         {
           this.state.navList.map((v,k)=>{
             return (
-              <div onClick={() => this.changeNav(v, k)} className={[style.navItem, k === this.state.currentNav ? style.itemShow : ''].join(' ')} key={k}>
+              <div onClick={(e) => this.changeNav(v, k, e)} className={[style.navItem, k === this.state.currentNav ? style.itemShow : ''].join(' ')} key={k}>
                 <i className={"iconfont icon-" + v.icon}></i>
                 <div className={style.navName}>{v.name}</div>
               </div>
@@ -70,7 +70,8 @@ class Home extends Component{
   handleChangeIndex(index){
     console.log(index)
   }
-  changeNav(v, k){
+  changeNav(v, k, e){
+    e.stopPropagation();
     this.props.history.replace(v.path)
     this.setState({
       currentNav: k

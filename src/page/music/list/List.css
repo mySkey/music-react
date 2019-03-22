@@ -1,0 +1,28 @@
+.typeTitle{
+  border-bottom: 1px solid #eee;
+}
+.typeList{
+  height: 1.8rem;
+  padding: 0 0.75rem;
+  padding-bottom: 0.4rem;
+  font-size: 0.7rem;
+  color: #333;
+  align-items: flex-end;
+}
+.typeItem{
+  transition: all 0.5s;
+}
+.itemShow{
+  font-size: 0.9rem;
+  color: #33c9d4;
+}
+.line{
+  width: 100%;
+  height: 1px;
+}
+
+.swiper{
+  width: 100%;
+  min-height: calc(100vh - 3rem);
+  padding-bottom: 3rem;
+}
