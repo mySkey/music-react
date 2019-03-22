@@ -7,7 +7,7 @@ class Home extends Component {
     return (
       <div>
         123
-        <SwipeableViews onChangeIndex={this.handleChangeIndex}>
+        <SwipeableViews onTouchStart={this.handleTouchStart} onTouchMove={this.handleTouchMove} onChangeIndex={this.handleChangeIndex}>
           <div>1</div>
           <div>2</div>
           <div>3</div>
@@ -31,6 +31,12 @@ class Home extends Component {
   }
   handleChangeIndex(index) {
     console.log(index)
+  }
+  handleTouchStart(e){
+    console.log(e)
+  }
+  handleTouchMove(){
+    console.log(1)
   }
 }
 
