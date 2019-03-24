@@ -1,10 +1,12 @@
 import React,{ Component } from 'react'
-import { Loadable, MyLoadingComponent } from '@/routers/LazyLoad.js'
 import { connect } from 'react-redux'
 import style from './Home.css';
 import { mapStateToProps, mapDispatchToProps } from '@/store/modules/counter.js'
 import { Route, Redirect, Switch } from 'react-router-dom'
 
+import Music from  '@/page/music/list/List.js'
+import Fm from  '@/page/fm/list/List.js'
+import News from  '@/page/news/list/List.js'
 
 class Home extends Component{
   render(){
@@ -23,9 +25,9 @@ class Home extends Component{
         }
         </div>
         <Switch>
-          <Route path="/app/music" component={Loadable({ loader: () => import('@/page/music/list/List.js'), loading: MyLoadingComponent })}></Route>
-          <Route path="/app/fm" component={Loadable({ loader: () => import('@/page/fm/list/List.js'), loading: MyLoadingComponent })}></Route>
-          <Route path="/app/news" component={Loadable({ loader: () => import('@/page/news/list/List.js'), loading: MyLoadingComponent })}></Route>
+          <Route path="/app/music" component={Music}></Route>
+          <Route path="/app/fm" component={Fm}></Route>
+          <Route path="/app/news" component={News}></Route>
           <Redirect exact from="/app" to="/app/music" />
         </Switch>
       </div>
@@ -53,8 +55,8 @@ class Home extends Component{
       }
     })
   }
-  componentWillUpdate() {
-
+  componentWillUpdate(){
+    document.getElementById('root').scrollIntoView(true);//为ture返回顶部，false为底部
   }
   componentDidUpdate(){
 
@@ -62,7 +64,6 @@ class Home extends Component{
   componentWillUnmount(){
 
   }
-  
   toDetail(){
     this.props.reduce();
     this.props.history.push('/detail');

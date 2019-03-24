@@ -224,3 +224,171 @@ export default connect(mapStateToProps, mapDispatchToProps)(Detail)
 * <a href="https://www.cnblogs.com/bax-life/p/8440326.html" target="_blank">真铁头娃redux和react-redux小记</a>
 >
  
+
+ ### 六、路由的嵌套
+
+ react-router4没法直接嵌套写路由，嵌套的路由在组件中写，就像真的路由也是组件
+
+router.js中的路由配置
+
+```javascript
+<Router>
+  <Switch>
+    <Route path="/app" component={Loadable({ loader: () => import('@/page/home/Home.js'), loading: MyLoadingComponent })}></Route>
+    <Route path="/login" component={Loadable({ loader: () => import('@/page/user/login/Login.js'), loading: MyLoadingComponent })}></Route>
+    <Route path="/register" component={Loadable({ loader: () => import('@/page/user/register/Register.js'), loading: MyLoadingComponent })}></Route>
+    <Redirect exact from="/" to="/app" />
+  </Switch>
+</Router>
+```
+
+然后在Home.js中配置它的子路由
+
+ ```javascript
+<Switch>
+  <Route path="/app/music" component={Music}></Route>
+  <Route path="/app/fm" component={Fm}></Route>
+  <Route path="/app/news" component={News}></Route>
+  <Redirect exact from="/app" to="/app/music" />
+</Switch>
+ ```
+
+ ### 七、css模块化
+
+ 如果不修改webpack的配置，那么父组件的样式重名类名的时候会影响子组件的样式，配置后会把类型打包hash值，将modules 设置为 true
+
+ ```javascript
+module.exports = {
+  module: {
+    rulers:[
+      {
+        test: /\.css$/,
+        use: [
+          require.resolve('style-loader'),
+          {
+            loader: require.resolve('css-loader'),
+            options: {
+              importLoaders: 1,
+              modules: true
+            },
+          },
+          {
+            loader: require.resolve('postcss-loader'),
+            options: {
+              // Necessary for external CSS imports to work
+              // https://github.com/facebookincubator/create-react-app/issues/2677
+              ident: 'postcss',
+              plugins: () => [
+                require('postcss-flexbugs-fixes'),
+                autoprefixer({
+                  browsers: [
+                    '>1%',
+                    'last 4 versions',
+                    'Firefox ESR',
+                    'not ie < 9', // React doesn't support IE8 anyway
+                  ],
+                  flexbox: 'no-2009',
+                }),
+              ],
+            },
+          },
+        ],
+      },
+    ]
+  }
+}
+ ```
+
+ 然后在js文件中引入时也有变化
+
+ ```javascript
+import style from './Home.css'
+import React,{ Component } from 'react'
+
+class Home extends Component{
+  render(){
+    return(
+      <div className={style.home}></div>
+    )
+  }
+}
+ ```
+
+ 最后就是全局的css，公用的类，这时你引入到index.js里面将会失效了，可以在index.html里面link引入
+
+ ### 八、使用redux异步存储数据时和react-loadable会冲突，会一直陷入组件挂载中循环
+
+ ### 九、使用监听的问题
+
+ * 添加监听如果不绑定当前的作用域，那么将无法在监听的回调用调用当前类的方法
+
+ ```javascript
+componentDidMount() {
+  window.addEventListener('scroll', this.hadleScroll)
+  console.log(this.props.news)
+  if(this.props.news.length===0){
+    this.getList()
+  }
+}
+componentWillUnmount(){
+  window.removeEventListener('scroll', this.hadleScroll)
+}
+hadleScroll(){
+  this.scroll()   // scroll将会是undefined
+}
+scroll(){
+
+}
+ ```
+
+* 但是绑定了当前作用域的话将会无法清除监听
+
+ ```javascript
+componentDidMount() {
+  window.addEventListener('scroll', this.hadleScroll.bind(this))
+  console.log(this.props.news)
+  if(this.props.news.length===0){
+    this.getList()
+  }
+}
+componentWillUnmount(){
+  window.removeEventListener('scroll', this.hadleScroll.bind(this))
+}
+hadleScroll(){
+  this.scroll()   // 这时能调用scroll函数了，但是切换到别的路由，监听并没有移除
+}
+scroll(){
+
+}
+ ```
+
+ 最终解决方案是，将监听的回调函数设置成变量
+
+  ```javascript
+constructor(props){
+  super(props)
+  this.hadleScroll = ()=>{
+    this.scroll()
+  }
+}
+componentDidMount() {
+  window.addEventListener('scroll', this.hadleScroll
+  console.log(this.props.news)
+  if(this.props.news.length===0){
+    this.getList()
+  }
+}
+componentWillUnmount(){
+  window.removeEventListener('scroll', this.hadleScroll
+}
+scroll(){
+
+}
+ ```
+
+
+### End、学习需求（vue中有的特性）
+
+* 全局监听滚动，向每个路由分发一个事件，比如滚动到底了，调用当前路由的onReachBottom
+
+* 路由的切换如何记忆该路由的滚动位置，下次切换过来，直接到这个位置

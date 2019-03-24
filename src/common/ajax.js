@@ -1,43 +1,70 @@
-global.ajax = {
-  get(url = '', parames = '') {
-    return new Promise((resolve, reject) => {
-      let xhr = new XMLHttpRequest()
-      if (parames) {
-        url = url + '?'
-        for (let i in parames) {
-          url += `${i}=${parames[i]}&`
-        }
-        url = url.slice(0, url.length - 1)
+let api_url = 'http://localhost:9000/api/'
+let ajax = (obj) => {
+  let url = obj.url;
+  let type = obj.type.toUpperCase() || 'GET';
+  let data = obj.data || {};
+  let headers = obj.headers || {};
+
+  // GET方法的话，是将data里的参数拼接在url，POST方法的话是将data转成json发送过去
+  if(type === 'GET'){
+    url += '?';
+    for(let i in data){
+      url += (i + '=' + data[i]+ '&')
+    }
+    url = url.slice(0,url.length-1)
+  }
+  data = JSON.stringify(obj.data) || JSON.stringify({});
+
+  let xhr = new XMLHttpRequest();
+  xhr.open(type, url, true);
+  // 带上请求头
+  for(let i in headers){
+    xhr.setRequestHeader(i, headers[i]);
+  }
+  xhr.send(data);
+  xhr.onreadystatechange = function(){
+    if(xhr.readyState===4 && xhr.status===200){
+      try {
+        let response = JSON.parse(xhr.responseText); // 后台一般也是返回一个json格式的数据，所以我们一般直接转了再用
+        obj.success(response);
+      } catch (err) {
+        obj.error(err);
       }
-      xhr.open("GET", url, true)
-      xhr.send()
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          try {
-            //let response = JSON.parse(xhr.responseText)
-            resolve(xhr.responseText)
-          } catch (err) {
-            reject(err)
-          }
-        }
-      }
-    })
-  },
-  post(url = '', parames = '') {
-    return new Promise((resolve, reject) => {
-      let xhr = new XMLHttpRequest()
-      xhr.open("POST", url, true)
-      parames ? xhr.send(parames) : xhr.send()
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          try {
-            let response = JSON.parse(xhr.responseText)
-            resolve(response)
-          } catch (err) {
-            reject(err)
-          }
-        }
-      }
-    })
+    }
   }
 }
+
+ajax.get = (url, data)=>{
+  return new Promise((resolve, reject)=>{
+    ajax({ 
+      url: api_url+url,
+      type: 'get',
+      data,
+      headers:{},
+      success: res=>{
+        resolve(res)
+      },
+      error: err=>{
+        reject(err)
+      }
+     })
+  })
+}
+ajax.post = (url, data)=>{
+  return new Promise((resolve, reject)=>{
+    ajax({ 
+      url: api_url+url,
+      type: 'post',
+      data,
+      headers:{},
+      success: res=>{
+        resolve(res)
+      },
+      error: err=>{
+        reject(err)
+      }
+     })
+  })
+}
+
+export default ajax
