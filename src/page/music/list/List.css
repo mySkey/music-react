@@ -3,7 +3,6 @@
 }
 .typeList{
   height: 1.8rem;
-  padding: 0 0.75rem;
   padding-bottom: 0.4rem;
   font-size: 0.7rem;
   color: #333;
@@ -11,15 +10,29 @@
 }
 .typeItem{
   transition: all 0.5s;
+  text-align: center;
 }
 .itemShow{
   font-size: 0.9rem;
   color: #33c9d4;
 }
-.line{
-  width: 100%;
-  height: 1px;
+
+.navSwiper{
+  position: relative;
 }
+.navSlider{
+  height: 2px;
+  position: absolute;
+  bottom: -1px;
+  transition: all 0.5s;
+}
+.navLine{
+  height: 100%;
+  background: #33c9d4;
+  width: 60%;
+  margin-left: 20%;
+}
+
 
 .swiper{
   width: 100%;
