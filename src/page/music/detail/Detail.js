@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import style from './Detail.css'
-
 import { connect } from 'react-redux'
-import { mapStateToProps, mapDispatchToProps } from '@/store/modules/myinfo.js'
+import Progress from '@/components/Progress.js'
 class Detail extends Component{
   constructor(props){
     super(props)
@@ -16,7 +15,8 @@ class Detail extends Component{
     return(
       <div className="detail">
         <h4>{this.props.myInfo.name}</h4>
-        <p onClick={() => this.props.setName('mySkey')}>设置名字</p>
+        <p onClick={() => this.props.setName('mySkey')}>设置名字{global.common.getAudioTime(this.props.audio.currentTime)}----{global.common.getAudioTime(this.props.audio.duration)}</p>
+        <div style={{width: '300px', marginLeft: '50px'}}><Progress changeProgress={this.changeProgress.bind(this)}></Progress></div>
         <ul className={[style.lrcList, 'df-col'].join(' ')}>
           {
             this.state.lrcArr.map((v,k)=>{
@@ -75,6 +75,24 @@ class Detail extends Component{
       lrcArr.push(v.slice(9, v.length))
     }
     return { timeArr, lrcArr }
+  }
+  changeProgress(radio){
+    console.log(radio)
+  }
+}
+
+const mapStateToProps = state => {
+  return {
+    myInfo: state.myInfo,
+    audio: state.music.playing
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setName(name){
+      dispatch({ type: 'setName', name })
+    }
   }
 }
 
