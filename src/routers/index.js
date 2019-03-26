@@ -6,6 +6,7 @@ export default ()=>(
   <Router>
     <Switch>
       <Route path="/app" component={Loadable({ loader: () => import('@/page/home/Home.js'), loading: MyLoadingComponent })}></Route>
+      <Route path="/music/detail" component={Loadable({ loader: () => import('@/page/music/detail/Detail.js'), loading: MyLoadingComponent })}></Route>
       <Route path="/login" component={Loadable({ loader: () => import('@/page/user/login/Login.js'), loading: MyLoadingComponent })}></Route>
       <Route path="/register" component={Loadable({ loader: () => import('@/page/user/register/Register.js'), loading: MyLoadingComponent })}></Route>
       <Redirect exact from="/" to="/app" />

@@ -30,7 +30,7 @@ class Home extends Component {
           {
             [0,0,0,0,0,0].map((v,k)=>{
               return(
-                <div className={style.swiper} key={k}>{k+1}</div>
+                <div onClick={()=>this.props.history.push('/music/detail')} className={style.swiper} key={k}>{k+1}</div>
               )
             })
           }
