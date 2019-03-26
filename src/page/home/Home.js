@@ -24,12 +24,17 @@ class Home extends Component{
           })
         }
         </div>
-        <Switch>
-          <Route path="/app/music" component={Music}></Route>
-          <Route path="/app/fm" component={Fm}></Route>
-          <Route path="/app/news" component={News}></Route>
-          <Redirect exact from="/app" to="/app/music" />
-        </Switch>
+        {
+          true ? 
+            <Switch>
+            <Route path="/app/music" component={Music}></Route>
+            <Route path="/app/fm" component={Fm}></Route>
+            <Route path="/app/news" component={News}></Route>
+            <Redirect exact from="/app" to="/app/music" />
+          </Switch>
+          :<div>没有权限</div>
+        }
+        
       </div>
     )
   }

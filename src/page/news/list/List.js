@@ -2,10 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import style from './List.css'
 import { mapStateToProps, mapDispatchToProps } from '@/store/modules/news.js'
+import LoadMore from '@/components/LoadMore.js'
+import ScrollWatch from '@/components/ScrollWatch.js'
 class News extends Component {
   render() {
     return (
-      <div>
+      <div className={style.news}>
         {
           this.props.news.map((v,k)=>{
             return(
@@ -14,7 +16,8 @@ class News extends Component {
           })
         }
 
-        {/* <ScrollWatch pageTop={100} onReachBottom={this.onReachBottom.bind(this)}></ScrollWatch> */}
+        <ScrollWatch onReachBottom={this.onReachBottom.bind(this)}></ScrollWatch>
+        <LoadMore loading={this.state.loading}></LoadMore>
       </div>
     )
   }
@@ -27,33 +30,13 @@ class News extends Component {
     this.con = {
       p: 1
     }
-    this.hadleScroll = ()=>{
-      const scrollTop = window.scrollY;
-      const offsetHeight = window.innerHeight;
-      const scrollHeight = document.body.scrollHeight;
-      if (scrollTop + offsetHeight >= scrollHeight -10) {
-        this.onReachBottom();
-      }
-    }
   }
   componentDidMount() {
-    window.addEventListener('scroll', this.hadleScroll)
     console.log(this.props.news)
     if(this.props.news.length===0){
       this.getList()
     }
   }
-  componentWillUnmount(){
-    window.removeEventListener('scroll', this.hadleScroll)
-  }
-  // hadleScroll(){
-  //   const scrollTop = window.scrollY;
-  //   const offsetHeight = window.innerHeight;
-  //   const scrollHeight = document.body.scrollHeight;
-  //   if (scrollTop + offsetHeight >= scrollHeight -10) {
-  //     this.onReachBottom();
-  //   }
-  // }
   onReachBottom(){
     if(this.state.loading !== 0) return
     if(this.props.page.p >= this.props.page.total_page){
