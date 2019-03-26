@@ -8,7 +8,8 @@ class Detail extends Component{
     this.state = {
       timeArr: [],
       lrcArr: [],
-      currentLrc: 0
+      currentLrc: 0,
+      userChange: false
     }
   }
   render(){
@@ -16,7 +17,9 @@ class Detail extends Component{
       <div className="detail">
         <h4>{this.props.myInfo.name}</h4>
         <p onClick={() => this.props.setName('mySkey')}>设置名字{global.common.getAudioTime(this.props.audio.currentTime)}----{global.common.getAudioTime(this.props.audio.duration)}</p>
-        <div style={{width: '300px', marginLeft: '50px'}}><Progress changeProgress={this.changeProgress.bind(this)}></Progress></div>
+        <div style={{width: '300px', marginLeft: '50px'}}>
+          <Progress radio={this.state.userChange ? '' : (this.props.audio.currentTime / this.props.audio.duration)} touchStart={this.progressTouch.bind(this)} changeProgress={this.changeProgress.bind(this)}></Progress>
+        </div>
         <ul className={[style.lrcList, 'df-col'].join(' ')}>
           {
             this.state.lrcArr.map((v,k)=>{
@@ -34,14 +37,19 @@ class Detail extends Component{
     )
   }
   componentDidMount(){
-    //console.log(this.props.myInfo)
     this.getLrc()
+  }
+  componentWillReceiveProps(){
+    //console.log(this.props.audio.currentTime)
   }
   getLrc() {
     global.ajax.get('lrc', { music: '起风了' }).then(res => {
       if (res.code === 0) {
         let { timeArr, lrcArr } = this.analysis(res.data.lrc)
         this.setState({ timeArr, lrcArr })
+        console.log(timeArr, lrcArr)
+        global.audioDom.src = 'http://audio.22family.com/%E8%B5%B7%E9%A3%8E%E4%BA%86.mp3'
+        global.audioDom.play()
       }
     })
   }
@@ -76,8 +84,15 @@ class Detail extends Component{
     }
     return { timeArr, lrcArr }
   }
+  progressTouch(){
+    this.setState({ userChange: true })
+  }
   changeProgress(radio){
-    console.log(radio)
+    let currentTime = Math.floor(radio * this.props.audio.duration)
+    global.audioDom.currentTime = currentTime
+    this.props.setCurrentTime(currentTime)
+    this.setState({ userChange: false })
+    console.log(this.props.audio)
   }
 }
 
@@ -92,6 +107,9 @@ const mapDispatchToProps = dispatch => {
   return {
     setName(name){
       dispatch({ type: 'setName', name })
+    },
+    setCurrentTime(currentTime){
+      dispatch({ type: 'setCurrentTime', currentTime })
     }
   }
 }

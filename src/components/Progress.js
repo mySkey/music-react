@@ -6,7 +6,7 @@ export default class Progress extends Component{
       <div>
         <div id="swiper" onTouchStart={(e) => this.swiperTouch(e)} style={this.getSwiperStyle()}>
           <div style={this.getLineStyle()}></div>
-          <div onTouchStart={(e) => this.touchStart(e)} onTouchMove={(e) => this.touchMove(e)} onTouchEnd={(e) => this.touchEnd(e)} style={this.getSliderStyle()}></div>
+          <div id="slider" onTouchStart={(e) => this.touchStart(e)} onTouchMove={(e) => this.touchMove(e)} onTouchEnd={(e) => this.touchEnd(e)} style={this.getSliderStyle()}></div>
         </div>
       </div>
     )
@@ -16,11 +16,17 @@ export default class Progress extends Component{
     super(props)
     this.state = {
       left: 0,
-      sliderW: 12
+      sliderW: 14
     }
   }
   componentDidMount(){
 
+  }
+  componentWillReceiveProps(props){
+    if(props.radio){
+      let swiperDom = document.getElementById('swiper')
+      this.setState({ left: swiperDom.offsetWidth * props.radio })
+    }
   }
   getSwiperStyle(){
     return {
@@ -57,18 +63,20 @@ export default class Progress extends Component{
 
   touchStart(e){
     e.stopPropagation()
+    this.props.touchStart()
     this.setState({ sliderW: 18 })
   }
   touchMove(e) {
     let endX = e.targetTouches[0].clientX
     let swiperDom = document.getElementById('swiper')
+    let sliderDom = document.getElementById('slider')
     let startX = swiperDom.offsetLeft
     if (endX - startX <= 0){
       this.setState({ left: 0 })
       return
     }
-    if (endX - startX >= swiperDom.offsetWidth){
-      this.setState({ left: swiperDom.offsetWidth })
+    if (endX - startX >= (swiperDom.offsetWidth - sliderDom.offsetWidth)){
+      this.setState({ left: swiperDom.offsetWidth - sliderDom.offsetWidth })
       return
     }
     this.setState({ left: endX - startX })

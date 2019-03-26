@@ -4,18 +4,33 @@ import { connect } from 'react-redux'
 class MyAudio extends Component{
   constructor(props){
     super(props)
-    global.audioDom = new Audio('http://audio.22family.com/%E8%B5%B7%E9%A3%8E%E4%BA%86.mp3')
-    global.audioDom.pause()
+    global.audioDom = new Audio()
+    global.audioDom.preload = 'auto'
   }
   componentDidMount(){
-    global.audioDom.addEventListener('timeupdate', this.handlePlaying.bind(this))
+    this.initEvent()
+  }
+  initEvent(){
+    global.audioDom.addEventListener('waiting', this.handleWaiting.bind(this))
+    global.audioDom.addEventListener('play', this.handlePlay.bind(this))
+    global.audioDom.addEventListener('timeupdate', this.handleTimeUpdate.bind(this))
+    global.audioDom.addEventListener('pause', this.handlePause.bind(this))
     global.audioDom.addEventListener('ended', this.handleEnded.bind(this))
   }
-  handlePlaying(){
+  handleWaiting(){
+
+  }
+  handlePlay(){
+
+  }
+  handleTimeUpdate(){
     let { currentTime, duration } = global.audioDom
+    duration = isNaN(duration) ? 0 : duration
     this.props.setCurrentTime(Math.floor(currentTime))
     this.props.setDuration(Math.floor(duration))
-    //console.log(this.props.list)
+  }
+  handlePause(){
+
   }
   handleEnded(){
 
@@ -30,7 +45,8 @@ class MyAudio extends Component{
 const mapStateToProps = (state) => {
   return {
     list: state.music.list,
-    audio: state.music.playing
+    audio: state.music.playing,
+    handlers: state.music.handlers
   }
 }
 const mapDispatchToProps = (dispatch) => {
