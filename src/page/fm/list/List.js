@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import SwipeableViews from 'react-swipeable-views';
-import { mapStateToProps, mapDispatchToProps } from '@/store/modules/counter.js'
+import { mapStateToProps, mapDispatchToProps } from '@/store/reducer/counter.js'
 class Home extends Component {
   render() {
     return (

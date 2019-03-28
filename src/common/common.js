@@ -1,11 +1,13 @@
 global.common = {
   analysis(str) {
-    let s = str.replace(/[\r\n]/g, "").split('[');
-    let lrcDataArr = s.slice(5);
+    str = str.slice(str.charAt('[00:00:00]'))
+    let s = str.replace(/[\s\r\n]/g, "").split('[');
+    let lrcDataArr = s;
     let timeArr = [], lrcArr = [];
     for (let v of lrcDataArr) {
-      timeArr.push(v.slice(0, 8))
-      lrcArr.push(v.slice(9, v.length))
+      let lrc = v.split(']')
+      timeArr.push(lrc[0])
+      lrcArr.push(lrc[1])
     }
     return { timeArr, lrcArr }
   },

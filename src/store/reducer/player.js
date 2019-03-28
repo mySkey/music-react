@@ -9,10 +9,14 @@ let musicInfo = {
     cover: '',
     rotate: 0,
     rate: 1,
-    singer: '',
-    avatar: '',
+    singer: {
+      avatar: '',
+      name: ''
+    },
     currentTime: 0,
-    duration: 0
+    duration: 0,
+    timeArr: [],
+    lrcArr: []
   }
 }
 

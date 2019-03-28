@@ -6,23 +6,21 @@ class Detail extends Component{
   constructor(props){
     super(props)
     this.state = {
-      timeArr: [],
-      lrcArr: [],
       currentLrc: 0,
       userChange: false
     }
+    this.id = ''
   }
   render(){
     return(
-      <div className="detail">
-        <h4>{this.props.myInfo.name}</h4>
-        <p onClick={() => this.props.setName('mySkey')}>设置名字{global.common.getAudioTime(this.props.audio.currentTime)}----{global.common.getAudioTime(this.props.audio.duration)}</p>
+      <div style={this.detailStyle()} className="detail">
+        <p onClick={() => this.props.setName('mySkey')}>{global.common.getAudioTime(this.props.audio.currentTime)}----{global.common.getAudioTime(this.props.audio.duration)}</p>
         <div style={{width: '300px', marginLeft: '50px'}}>
           <Progress radio={this.state.userChange ? '' : (this.props.audio.currentTime / this.props.audio.duration)} touchStart={this.progressTouch.bind(this)} changeProgress={this.changeProgress.bind(this)}></Progress>
         </div>
         <ul className={[style.lrcList, 'df-col'].join(' ')}>
           {
-            this.state.lrcArr.map((v,k)=>{
+            this.props.audio.lrcArr.map((v,k)=>{
               return(
                 <li className={style.lrcItem} key={k}>
                   <div style={this.getItemStyle(k)} className={style.lrcItem}>{v}</div>
@@ -36,19 +34,32 @@ class Detail extends Component{
       </div>
     )
   }
+  detailStyle(){
+    let i_resource = this.props.player.i_resource
+    let cover = this.props.audio.cover
+    return{
+      height: '100vh',
+      overflow: 'hidden',
+      background: `url(${i_resource + cover + '-ph'}) 0 0/cover`
+    }
+  }
   componentDidMount(){
+    this.id =  this.props.location.query.id
     this.getLrc()
   }
   componentWillReceiveProps(){
     //console.log(this.props.audio.currentTime)
   }
   getLrc() {
-    global.ajax.get('lrc', { music: '起风了' }).then(res => {
+    global.ajax.get('audio/detail', { id: this.id }).then(res => {
       if (res.code === 0) {
-        let { timeArr, lrcArr } = this.analysis(res.data.lrc)
-        this.setState({ timeArr, lrcArr })
-        console.log(timeArr, lrcArr)
-        global.audioDom.src = 'http://audio.22family.com/%E8%B5%B7%E9%A3%8E%E4%BA%86.mp3'
+        let { a_resource } = res.data;
+        let { lrc, url, cover, singer, name  } = res.data.audio
+        let { timeArr, lrcArr } = global.common.analysis(lrc)
+        this.props.setPlaying({ timeArr, lrcArr, url, singer, name, cover })
+        console.log(this.props.audio)
+
+        global.audioDom.src = a_resource + url;
         global.audioDom.play()
       }
     })
@@ -74,16 +85,6 @@ class Detail extends Component{
       )
     }
   }
-  analysis(str){
-    let s = str.replace(/[\r\n]/g, "").split('[');
-    let lrcDataArr = s.slice(5);
-    let timeArr = [], lrcArr = [];
-    for (let v of lrcDataArr){
-      timeArr.push(v.slice(0, 8))
-      lrcArr.push(v.slice(9, v.length))
-    }
-    return { timeArr, lrcArr }
-  }
   progressTouch(){
     this.setState({ userChange: true })
   }
@@ -99,6 +100,7 @@ class Detail extends Component{
 const mapStateToProps = state => {
   return {
     myInfo: state.myInfo,
+    player: state.player,
     audio: state.player.playing
   }
 }
@@ -110,6 +112,9 @@ const mapDispatchToProps = dispatch => {
     },
     setCurrentTime(currentTime){
       dispatch({ type: 'setCurrentTime', currentTime })
+    },
+    setPlaying(playing){
+      dispatch({ type: 'setPlaying', playing })
     }
   }
 }

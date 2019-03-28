@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import dayjs from 'dayjs'
 import style from './List.css'
 import SwipeableViews from 'react-swipeable-views';
 import ScrollWatch from '@/components/ScrollWatch.js'
@@ -37,12 +38,22 @@ class Home extends Component {
           {
             this.props.musics.map((v,k)=>{
               return(
-                <div onClick={() => this.props.history.push('/music/detail')} className={[this.state.currentType === k ? style.swiperShow : style.swiper].join(' ')} key={k}>
+                <div className={[this.state.currentType === k ? style.swiperShow : style.swiper].join(' ')} key={k}>
                   {
                     v.audios.map((e,i)=>{
                       return(
-                        <div key={i}>
-                          <img src={this.props.player.i_resource + e.cover + '-cover'} />
+                        <div  onClick={() => this.props.history.push({pathname: '/music/detail', query:{id: e.id}})} className={[style.item, 'df'].join(' ')} key={i}>
+                          <img className={style.item_cover} src={this.props.player.i_resource + e.cover + '-cover'} />
+                          <div className={[style.item_info, 'df-1'].join(' ')}>
+                            <h3 className={style.item_name}>{e.name}</h3>
+                            <div className={[style.singer_name, 'df'].join(' ')}>
+                              <div className={style.singer_avatar}>
+                                <img className={style.avatar_img} src={this.props.player.i_resource + e.singer.avatar + '-avatar'} />
+                              </div>
+                              {e.singer.name}
+                            </div>
+                            <div className={style.item_date}>{this.dateFormat(e.date)}</div>
+                          </div>
                         </div>
                       )
                     })
@@ -82,6 +93,9 @@ class Home extends Component {
       width: `${ 100 / this.state.types.length}%`, 
       left: `${this.state.currentType * (100 / this.state.types.length)}%`
     }
+  }
+  dateFormat(t){
+    return dayjs(t * 1000).format('YYYY.MM.YY')
   }
   lineStyle(){
     return{
@@ -136,14 +150,13 @@ class Home extends Component {
     this.setState({ startX })
   }
   handleTouchMove(e){
-    global.common.debounce(()=>{
-      let endX = e.targetTouches[0].clientX
-      if (endX - this.state.startX > 0) {
-        this.setState({ lineLeft: (endX - this.state.startX) / 10, lineWidth: (endX - this.state.startX) / 10 })
-      } else {
-        this.setState({ lineWidth: (this.state.startX - endX) / 10 })
-      }
-    })
+    e.stopPropagation()
+    let endX = e.targetTouches[0].clientX
+    if (endX - this.state.startX > 0) {
+      this.setState({ lineLeft: (endX - this.state.startX) / 10, lineWidth: (endX - this.state.startX) / 10 })
+    } else {
+      this.setState({ lineWidth: (this.state.startX - endX) / 10 })
+    }
   }
   handleTouchEnd(e){
     this.setState({ lineWidth: 0, lineLeft: 0 })

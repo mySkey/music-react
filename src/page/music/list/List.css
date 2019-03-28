@@ -53,3 +53,46 @@
   padding-bottom: 3rem;
   max-height: auto;
 }
+
+.item{
+  padding: 1rem 0.75rem 0.5rem 0.75rem;
+  border-bottom: 1px solid #eee;
+  align-items: center;
+}
+.item .item_cover{
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+}
+.item .item_info{
+  width: 100%;
+  min-height: 4rem;
+  padding: 0.5rem 0;
+  padding-left: 1rem;
+}
+.item .item_info .item_name{
+  font-size: 0.8rem;
+  align-self: flex-start;
+}
+.item .item_info .singer_name{
+  align-items: center;
+  padding: 0.7rem 0 0.3rem 0;
+  font-size: 0.7rem;
+  color: #666;
+}
+.item .item_info .singer_name .singer_avatar{
+  width: 1.4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 0.4rem;
+}
+.item .item_info .singer_name .avatar_img{
+  width: 1rem;
+  height:1rem;
+  border-radius: 50%;
+}
+.item .item_info .item_date{
+  font-size: 0.6rem;
+  color: #999;
+}

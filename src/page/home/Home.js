@@ -1,7 +1,7 @@
 import React,{ Component } from 'react'
 import { connect } from 'react-redux'
 import style from './Home.css';
-import { mapStateToProps, mapDispatchToProps } from '@/store/modules/counter.js'
+import { mapStateToProps, mapDispatchToProps } from '@/store/reducer/counter.js'
 import { Route, Redirect, Switch } from 'react-router-dom'
 
 import Music from  '@/page/music/list/List.js'

@@ -6,7 +6,6 @@
 .lrcList{
   height: calc(100vh - 3rem);
   padding: 0 1rem;
-  background: url('http://audio.22family.com/myplayer/mini/0.jpg') 0 0 /cover;
   text-align: center;
   align-items: center;
   overflow: auto;

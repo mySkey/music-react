@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import style from './List.css'
-import { mapStateToProps, mapDispatchToProps } from '@/store/modules/news.js'
+import { mapStateToProps, mapDispatchToProps } from '@/store/reducer/news.js'
 import LoadMore from '@/components/LoadMore.js'
 import ScrollWatch from '@/components/ScrollWatch.js'
 class News extends Component {
