@@ -29,6 +29,11 @@ let player = (state = musicInfo, action)=>{
       let next_music = state.current_music < state.list.length - 1 ? state.current_music + 1 : state.current_music
       return Object.assign({}, state, { current_music: next_music })
 
+    case 'setPlaying':
+      let playingState = Object.assign({}, state)
+      playingState.playing = Object.assign({}, state.playing, action.playing)
+      return playingState
+
     case 'setRate':
       let rateState = Object.assign({}, state)
       rateState.playing = Object.assign({}, state.playing, { rate: action.rate })
