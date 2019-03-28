@@ -1,4 +1,10 @@
 .typeTitle{
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 999;
+  background: #fff;
   border-bottom: 1px solid #eee;
 }
 .typeList{
@@ -36,6 +42,14 @@
 
 .swiper{
   width: 100%;
-  min-height: calc(200vh - 3rem);
+  min-height: calc(100vh - 3rem);
+  max-height: calc(100vh - 3rem);
+  padding-top: 2rem;
   padding-bottom: 3rem;
+}
+.swiperShow{
+  width: 100%;
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+  max-height: auto;
 }

@@ -9,7 +9,7 @@ export default class ScrollWatch extends React.PureComponent{
   }
   constructor(props){
     super(props)
-    this.handleScroll = ()=>{
+    this.handleScroll = (e)=>{
       const scrollTop = window.scrollY;
       const offsetHeight = window.innerHeight;
       const scrollHeight = document.body.scrollHeight;
