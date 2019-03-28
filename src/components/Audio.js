@@ -29,8 +29,8 @@ class MyAudio extends Component{
 
 const mapStateToProps = (state) => {
   return {
-    list: state.music.list,
-    audio: state.music.playing
+    list: state.player.list,
+    audio: state.player.playing
   }
 }
 const mapDispatchToProps = (dispatch) => {

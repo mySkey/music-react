@@ -32,7 +32,6 @@ class News extends Component {
     }
   }
   componentDidMount() {
-    console.log(this.props.news)
     if(this.props.news.length===0){
       this.getList()
     }

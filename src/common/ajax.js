@@ -1,4 +1,4 @@
-let api_url = 'http://localhost:9000/api/'
+let api_url = 'http://localhost:9000/ph/'
 let ajax = (obj) => {
   let url = obj.url;
   let type = obj.type.toUpperCase() || 'GET';

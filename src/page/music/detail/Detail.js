@@ -84,7 +84,7 @@ class Detail extends Component{
 const mapStateToProps = state => {
   return {
     myInfo: state.myInfo,
-    audio: state.music.playing
+    audio: state.player.playing
   }
 }
 

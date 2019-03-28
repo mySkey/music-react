@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import style from './List.css'
 import SwipeableViews from 'react-swipeable-views';
 import ScrollWatch from '@/components/ScrollWatch.js'
-import { mapStateToProps, mapDispatchToProps } from '@/store/modules/counter.js'
+
 class Home extends Component {
   render() {
     return (
@@ -57,7 +57,7 @@ class Home extends Component {
     }
   }
   componentDidMount() {
-
+    this.getList()
   }
   sliderStyle(){
     return{
@@ -74,6 +74,15 @@ class Home extends Component {
   }
   changeType(currentType){
     this.setState({ currentType })
+  }
+  getList(){
+    global.ajax.get('audio', { type: this.state.currentType }).then(res=>{
+      if(res.code === 0){
+        let {audios, i_resource, a_resource, page} = res.data
+        this.props.setPlayer({ i_resource, a_resource })
+        console.log(this.props)
+      }
+    })
   }
   toDetail() {
     this.props.reduce();
@@ -99,6 +108,22 @@ class Home extends Component {
   }
   onReachBottom(){
     console.log('滑动到底部了~')
+  }
+}
+
+const mapStateToProps = state => {
+  return {
+    playList: state.player.list,
+    playing: state.player.playing,
+    player: state.player
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setPlayer(player) {
+      dispatch({ type: 'setPlayer', player })
+    }
   }
 }
 

@@ -3,8 +3,8 @@ let musicInfo = {
   current_music: 0,
   mode: 0,      // 0 单曲    1 顺序   2 随机
   status: 0,    // 0 未播放  1 播放   2 暂停中  3 已结束
-  a_resource: 'http://audio.22family.com/',
-  i_resource: 'http://audio.22family.com/myplayer/mini/',
+  a_resource: '',
+  i_resource: '',
   playing: {
     cover: '',
     rotate: 0,
@@ -16,7 +16,7 @@ let musicInfo = {
   }
 }
 
-let music = (state = musicInfo, action)=>{
+let player = (state = musicInfo, action)=>{
   if (typeof state === 'undefined') {
     return state
   }
@@ -53,9 +53,12 @@ let music = (state = musicInfo, action)=>{
     case 'pause':
       return Object.assign({}, state, { status: 2 })
 
+    case 'setPlayer':
+      return Object.assign({}, state, action.player)
+
     default:
       return state;
   }
 }
 
-export { music }
+export { player }
