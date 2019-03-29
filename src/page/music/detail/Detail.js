@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import style from './Detail.css'
 import { connect } from 'react-redux'
 import Progress from '@/components/Progress.js'
+import LrcList from '../components/lrc.js'
 class Detail extends Component{
   constructor(props){
     super(props)
@@ -13,24 +14,14 @@ class Detail extends Component{
   }
   render(){
     return(
-      <div style={this.detailStyle()} className="detail">
-        <p onClick={() => this.props.setName('mySkey')}>{global.common.getAudioTime(this.props.audio.currentTime)}----{global.common.getAudioTime(this.props.audio.duration)}</p>
-        <div style={{width: '300px', marginLeft: '50px'}}>
-          <Progress radio={this.state.userChange ? '' : (this.props.audio.currentTime / this.props.audio.duration)} touchStart={this.progressTouch.bind(this)} changeProgress={this.changeProgress.bind(this)}></Progress>
+      <div style={this.detailStyle()} className={style.detail}>
+        <div className={style.detail_container}>
+          <p onClick={() => this.props.setName('mySkey')}>{global.common.getAudioTime(this.props.audio.currentTime)}----{global.common.getAudioTime(this.props.audio.duration)}</p>
+          <div style={{ width: '300px', marginLeft: '50px' }}>
+            <Progress radio={this.state.userChange ? '' : (Math.floor(this.props.audio.currentTime) / this.props.audio.duration)} touchStart={this.progressTouch.bind(this)} changeProgress={this.changeProgress.bind(this)}></Progress>
+          </div>
+          <LrcList></LrcList>
         </div>
-        <ul className={[style.lrcList, 'df-col'].join(' ')}>
-          {
-            this.props.audio.lrcArr.map((v,k)=>{
-              return(
-                <li className={style.lrcItem} key={k}>
-                  <div style={this.getItemStyle(k)} className={style.lrcItem}>{v}</div>
-                  { this.showLrc(v, k) }
-                </li>
-              )
-            })
-          }
-          <li></li>
-        </ul>
       </div>
     )
   }
@@ -40,17 +31,17 @@ class Detail extends Component{
     return{
       height: '100vh',
       overflow: 'hidden',
-      background: `url(${i_resource + cover + '-ph'}) 0 0/cover`
+      background: `url(${cover ? (i_resource + cover + '-ph') : ''}) 0 0/cover`
     }
   }
   componentDidMount(){
-    this.id =  this.props.location.query.id
-    this.getLrc()
+    this.id = this.props.location.query ? this.props.location.query.id : 1
+    this.getDetail()
   }
   componentWillReceiveProps(){
     //console.log(this.props.audio.currentTime)
   }
-  getLrc() {
+  getDetail() {
     global.ajax.get('audio/detail', { id: this.id }).then(res => {
       if (res.code === 0) {
         let { a_resource } = res.data;
@@ -63,27 +54,6 @@ class Detail extends Component{
         global.audioDom.play()
       }
     })
-  }
-  getItemStyle(k){
-    return { 
-      visibility: this.state.currentLrc === k ? 'hidden' : 'visible',
-      fontSize: this.state.currentLrc === k ? '1rem' : '0.7rem'
-    }
-  }
-  getItemShowStyle(){
-    return{
-      animation: `${style.showing} linear 3s`
-    }
-  }
-  showLrc(v, k){
-    if (this.state.currentLrc === k){
-      return(
-        <div>
-          <div className={style.lrcItemShow}>{v}</div>
-          <div style={this.getItemShowStyle()} className={style.lrcItemShowIng}>{v}</div>
-        </div>
-      )
-    }
   }
   progressTouch(){
     this.setState({ userChange: true })

@@ -1,0 +1,31 @@
+.lrcList{
+  height: calc(100vh - 3rem);
+  padding: 0 1rem;
+  text-align: center;
+  align-items: center;
+  overflow: auto;
+}
+.lrcList .lrcItem{
+  color: #fff;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+.lrcList .lrcItemShow{
+  position: absolute;
+  color: #fff;
+  font-size: 1rem;
+  top:0;
+  left:0;
+  z-index: 98;
+}
+.lrcList .lrcItemShowIng{
+  position: absolute;
+  color: #dd5866;
+  font-size: 1rem;
+  top:0;
+  left:0;
+  z-index: 99;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}

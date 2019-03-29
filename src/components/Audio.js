@@ -26,7 +26,7 @@ class MyAudio extends Component{
   handleTimeUpdate(){
     let { currentTime, duration } = global.audioDom
     duration = isNaN(duration) ? 0 : duration
-    this.props.setCurrentTime(Math.floor(currentTime))
+    this.props.setCurrentTime(Number(currentTime.toFixed(3)))
     this.props.setDuration(Math.floor(duration))
   }
   handlePause(){

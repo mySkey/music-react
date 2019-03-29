@@ -43,12 +43,12 @@ class Home extends Component {
                     v.audios.map((e,i)=>{
                       return(
                         <div  onClick={() => this.props.history.push({pathname: '/music/detail', query:{id: e.id}})} className={[style.item, 'df'].join(' ')} key={i}>
-                          <img className={style.item_cover} src={this.props.player.i_resource + e.cover + '-cover'} />
+                          <img className={style.item_cover} src={this.props.player.i_resource + e.cover + '-cover'} alt='歌曲封面' />
                           <div className={[style.item_info, 'df-1'].join(' ')}>
                             <h3 className={style.item_name}>{e.name}</h3>
                             <div className={[style.singer_name, 'df'].join(' ')}>
                               <div className={style.singer_avatar}>
-                                <img className={style.avatar_img} src={this.props.player.i_resource + e.singer.avatar + '-avatar'} />
+                                <img className={style.avatar_img} src={this.props.player.i_resource + e.singer.avatar + '-avatar'} alt='歌手头像' />
                               </div>
                               {e.singer.name}
                             </div>

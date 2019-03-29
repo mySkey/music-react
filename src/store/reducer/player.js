@@ -8,7 +8,7 @@ let musicInfo = {
   playing: {
     cover: '',
     rotate: 0,
-    rate: 1,
+    playbackRate: 1,
     singer: {
       avatar: '',
       name: ''
@@ -40,7 +40,7 @@ let player = (state = musicInfo, action)=>{
 
     case 'setRate':
       let rateState = Object.assign({}, state)
-      rateState.playing = Object.assign({}, state.playing, { rate: action.rate })
+      rateState.playing = Object.assign({}, state.playing, { rate: action.playbackRate })
       return rateState
 
     case 'setCurrentTime':
