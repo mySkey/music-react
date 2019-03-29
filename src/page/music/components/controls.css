@@ -1,3 +1,15 @@
 .controls{
   width: 100%;
+  position: absolute;
+  bottom: 1rem;
+  left: 0;
+}
+.time{
+  color: #fff;
+  font-size: 0.6rem;
+  align-items: center;
+}
+.time .progress{
+  width: 10rem;
+  margin: 0 0.5rem;
 }

@@ -6,8 +6,8 @@ import style from './lrc.css'
 class Lrc extends Component{
   render(){
     return(
-      <div>
-        <ul className={[style.lrcList, 'df-col'].join(' ')}>
+      <div className={style.lrc_container}>
+        <ul onTouchMove={this.handleMove.bind(this)} className={[style.lrcList, 'df-col'].join(' ')}>
           {
             this.props.audio.lrcArr.map((v, k) => {
               return (
@@ -19,6 +19,7 @@ class Lrc extends Component{
             })
           }
         </ul>
+        {this.changeCurrentList()}
       </div>
     )
   }
@@ -31,7 +32,7 @@ class Lrc extends Component{
   getItemShowStyle() {
     return {
       width: `${this.state.currentWidth}px`,
-      transition: `all linear ${this.state.useTime}s`
+      transition: `all ease ${this.state.useTime}s`
     }
   }
   showLrc(v, k) {
@@ -40,6 +41,17 @@ class Lrc extends Component{
         <div>
           <div id='show-ing' className={style.lrcItemShow}>{v}</div>
           <div style={this.getItemShowStyle()} className={style.lrcItemShowIng}>{v}</div>
+        </div>
+      )
+    }
+  }
+  changeCurrentList(){
+    if(this.state.userChange){
+      return(
+        <div className={[style.swiper, 'df-j-b'].join(' ')}>
+          <div>{global.common.getAudioTime(this.state.changeTo)}</div>
+          <div className={style.line}></div>
+          <div onClick={this.chnageToLrc.bind(this)} className={style.play}><i className={'iconfont icon-play'}></i></div>
         </div>
       )
     }
@@ -53,11 +65,12 @@ class Lrc extends Component{
       currentLrc: 0,
       currentWidth: 0,
       useTime: 1,
-      userChange: false
+      userChange: false,
+      changeTo: 0
     }
   }
   componentDidMount(){
-    //this.getCurrentLrc()
+    
   }
   componentWillReceiveProps(){
     if(this.state.lrcArr.length===0){
@@ -86,9 +99,15 @@ class Lrc extends Component{
         let currentWidth = showingDom.offsetWidth
         if(currentLrc < this.state.timeArr.length - 1){
           let useTime = this.getSecond(this.state.timeArr[currentLrc + 1]) - this.getSecond(this.state.timeArr[currentLrc])
+          if(useTime > 10){
+            this.setState({ useTime: 10, currentLrc: -1 })
+          }
           this.setState({ useTime, currentWidth })
         }
       })
+      if(!this.state.userChange){
+        this.scrollLrc(currentLrc)
+      }
     }else{
       let showingDom = document.querySelector(`#show-ing`)
       let currentWidth = showingDom.offsetWidth
@@ -100,6 +119,30 @@ class Lrc extends Component{
     let second = Number(t.slice(3,5))
     let minS = Number(t.slice(7))
     return minute * 60 + second + minS / 1000
+  }
+  scrollLrc(currentLrc){
+    if(currentLrc){
+      let listDom = document.querySelector(`.${style.lrcList}`)
+      listDom.scrollTop = currentLrc * 32
+    }
+  }
+  handleMove(){
+    window.clearTimeout(this.timer)
+    this.setState({ userChange: true })
+    this.timer = setTimeout(()=>{
+      this.setState({ userChange: false })
+    }, 5000)
+
+    let listDom = document.querySelector(`.${style.lrcList}`)
+    let currentLrc = Math.round(listDom.scrollTop / 32)
+    let time = this.props.audio.timeArr[currentLrc]
+    let currentTime = Math.ceil(this.getSecond(time))
+    this.setState({ changeTo: currentTime })
+  }
+  chnageToLrc(){
+    this.setState({ userChange: false }, ()=>{
+      global.audioDom.currentTime = this.state.changeTo;
+    })
   }
 }
 
