@@ -56,8 +56,11 @@
 
 .item{
   padding: 1rem 0.75rem 0.5rem 0.75rem;
-  border-bottom: 1px solid #eee;
+  border-top: 1px solid #eee;
   align-items: center;
+}
+.swiperShow .item:first-child{
+  border: none;
 }
 .item .item_cover{
   width: 4rem;

@@ -1,4 +1,4 @@
-let api_url = 'http://localhost:9000/ph/'
+let api_url = process.env.NODE_ENV ==='development' ? 'http://localhost:9000/ph/' : 'http://api.22family.com/ph/'
 let ajax = (obj) => {
   let url = obj.url;
   let type = obj.type.toUpperCase() || 'GET';

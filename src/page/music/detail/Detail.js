@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import style from './Detail.css'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import LrcList from '../components/lrc.js'
 import Controls from '../components/controls.js'
 class Detail extends Component{
   constructor(props){
     super(props)
     this.state = {
-      currentLrc: 0,
+      current_music: 0,
       userChange: false
     }
     this.id = ''
@@ -16,7 +17,10 @@ class Detail extends Component{
     return(
       <div style={this.detailStyle()} className={style.detail}>
         <div className={style.detail_container}>
-          <Controls></Controls>
+          <Controls
+            playLast={this.playLast.bind(this)}
+            playNext={this.playNext.bind(this)}
+          ></Controls>
           <LrcList></LrcList>
         </div>
       </div>
@@ -32,23 +36,53 @@ class Detail extends Component{
     }
   }
   componentDidMount(){
-    this.id = this.props.location.query ? this.props.location.query.id : 1
+    this.id = this.props.location.search ? global.common.getQuery(this.props.location.search).id : 3
     this.getDetail()
   }
   componentWillReceiveProps(){
-    //console.log(this.props.audio.currentTime)
+    if(this.props.player.current_music !== this.state.current_music){
+      let current_music = this.props.player.current_music
+      this.setState({ current_music }, ()=>{
+        this.id = this.props.player.list[current_music].id
+        this.getDetail()
+      })
+    }
+  }
+  playLast(){
+    let current_music = this.props.player.current_music - 1
+    if(current_music<0){
+      current_music = this.props.player.list.length - 1
+    }
+    this.props.setPlayer({ current_music })
+    this.setState({ current_music }, ()=>{
+      this.id = this.props.player.list[current_music].id
+      this.getDetail()
+    })
+  }
+  playNext(){
+    let current_music = this.props.player.current_music + 1
+    if(current_music>=this.props.player.list.length){
+      current_music = 0
+    }
+    this.props.setPlayer({ current_music })
+    this.setState({ current_music }, ()=>{
+      this.id = this.props.player.list[current_music].id
+      this.getDetail()
+    })
   }
   getDetail() {
     global.ajax.get('audio/detail', { id: this.id }).then(res => {
       if (res.code === 0) {
         let { a_resource, i_resource } = res.data;
-        let { lrc, url, cover, singer, name  } = res.data.audio
+        let { lrc, id, url, cover, singer, name  } = res.data.audio
         let { timeArr, lrcArr } = global.common.analysis(lrc)
-        this.props.setPlaying({ timeArr, lrcArr, url, singer, name, cover })
+        this.props.setPlaying({id, timeArr, lrcArr, url, singer, name, cover })
         this.props.setPlayer({ i_resource, a_resource })
 
         global.audioDom.src = a_resource + url;
-        global.audioDom.play()
+        setTimeout(()=>{
+          global.audioDom.play()
+        }, 500)
       }
     })
   }
@@ -76,6 +110,10 @@ const mapDispatchToProps = dispatch => {
       dispatch({ type: 'setPlayer', player })
     }
   }
+}
+
+Detail.contextTypes = {
+  router: PropTypes.object.isRequired
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Detail)

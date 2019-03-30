@@ -21,7 +21,7 @@ class MyAudio extends Component{
 
   }
   handlePlay(){
-
+    this.props.setPlayer({ status: 1 })
   }
   handleTimeUpdate(){
     let { currentTime, duration } = global.audioDom
@@ -30,10 +30,45 @@ class MyAudio extends Component{
     this.props.setDuration(Math.floor(duration))
   }
   handlePause(){
-
+    this.props.setPlayer({ status: 2 })
   }
   handleEnded(){
-
+    this.props.setPlayer({ status: 3 })
+    let mode = this.props.player.mode;
+    switch (mode){  // 0 单曲    1 顺序   2 随机
+      case 0:
+        global.audioDom.play()
+        break;
+      case 1:
+        if(this.props.list.length> 0){
+          let current_music = this.props.player.current_music + 1
+          if(current_music>=this.props.list.length){
+            current_music = 0;
+          }
+          global.audioDom.src = this.props.player.a_resource + this.props.list[current_music].url
+          setTimeout(()=>{
+            global.audioDom.play()
+            this.props.setPlayer({ current_music })
+          }, 500)
+          return
+        }
+        global.audioDom.pause()
+        break;
+      case 2:
+        if(this.props.list.length> 0){
+          let current_music = Math.floor(Math.random() * this.props.list.length)
+          global.audioDom.src = this.props.player.a_resource + this.props.list[current_music].url
+          setTimeout(()=>{
+            global.audioDom.play()
+            this.props.setPlayer({ current_music })
+          },500)
+          return
+        }
+        global.audioDom.pause()
+        break;
+      default:
+        global.audioDom.pause()
+    }
   }
   render(){
     return(
@@ -45,7 +80,8 @@ class MyAudio extends Component{
 const mapStateToProps = (state) => {
   return {
     list: state.player.list,
-    audio: state.player.playing
+    audio: state.player.playing,
+    player: state.player
   }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -73,6 +109,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     setDuration(duration) {
       dispatch({ type: 'setDuration', duration })
+    },
+    setPlayer(player){
+      dispatch({ type: 'setPlayer', player })
     }
   };
 }

@@ -11,8 +11,8 @@ import News from  '@/page/news/list/List.js'
 class Home extends Component{
   render(){
     return (
-      <div>
-        <div className={[style.navList, 'df-j-b'].join(' ')}>
+      <div className={style.home}>
+        {/* <div className={[style.navList, 'df-j-b'].join(' ')}>
         {
           this.state.navList.map((v,k)=>{
             return (
@@ -23,7 +23,7 @@ class Home extends Component{
             )
           })
         }
-        </div>
+        </div> */}
         {
           true ? 
             <Switch>

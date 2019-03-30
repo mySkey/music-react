@@ -1,14 +1,17 @@
-let musicInfo = {
+let info = {
   list: [],
   current_music: 0,
-  mode: 0,      // 0 单曲    1 顺序   2 随机
-  status: 0,    // 0 未播放  1 播放   2 暂停中  3 已结束
+  mode: 0,            // 0 单曲    1 顺序   2 随机
+  status: 0,          // 0 未播放  1 播放   2 暂停中  3 已结束
+  playbackRate: 1,    // 倍速
   a_resource: '',
   i_resource: '',
   playing: {
+    id: '',
+    name: '',
     cover: '',
+    url: '',
     rotate: 0,
-    playbackRate: 1,
     singer: {
       avatar: '',
       name: ''
@@ -20,7 +23,7 @@ let musicInfo = {
   }
 }
 
-let player = (state = musicInfo, action)=>{
+let player = (state = info, action)=>{
   if (typeof state === 'undefined') {
     return state
   }

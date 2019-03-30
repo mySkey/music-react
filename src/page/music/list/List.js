@@ -42,7 +42,7 @@ class Home extends Component {
                   {
                     v.audios.map((e,i)=>{
                       return(
-                        <div  onClick={() => this.props.history.push({pathname: '/music/detail', query:{id: e.id}})} className={[style.item, 'df'].join(' ')} key={i}>
+                        <div  onClick={() => this.toDetail(e,i)} className={[style.item, 'df'].join(' ')} key={i}>
                           <img className={style.item_cover} src={this.props.player.i_resource + e.cover + '-cover'} alt='歌曲封面' />
                           <div className={[style.item_info, 'df-1'].join(' ')}>
                             <h3 className={style.item_name}>{e.name}</h3>
@@ -68,6 +68,19 @@ class Home extends Component {
       </div>
     )
   }
+  sliderStyle(){
+    return{
+      width: `${ 100 / this.state.types.length}%`, 
+      left: `${this.state.currentType * (100 / this.state.types.length)}%`
+    }
+  }
+  lineStyle(){
+    return{
+      width: `calc(60% + ${this.state.lineWidth}px)`,
+      marginLeft: `calc(20% - ${this.state.lineLeft}px)`,
+      transition: this.state.lineWidth > 0 ? '' : 'all 0.5s'
+    }
+  }
 
   constructor(props) {
     super(props)
@@ -88,21 +101,15 @@ class Home extends Component {
       this.setState({ currentType }, () => this.getList())
     }
   }
-  sliderStyle(){
-    return{
-      width: `${ 100 / this.state.types.length}%`, 
-      left: `${this.state.currentType * (100 / this.state.types.length)}%`
-    }
-  }
+
   dateFormat(t){
     return dayjs(t * 1000).format('YYYY.MM.YY')
   }
-  lineStyle(){
-    return{
-      width: `calc(60% + ${this.state.lineWidth}px)`,
-      marginLeft: `calc(20% - ${this.state.lineLeft}px)`,
-      transition: this.state.lineWidth > 0 ? '' : 'all 0.5s'
-    }
+  toDetail(e,i){
+    let { id, name, url, singer, cover } = e
+    this.props.setPlayer({ current_music: i })
+    this.props.setPlaying({ id, name, url, singer, cover })
+    this.props.history.push('/music/detail?id='+ e.id)
   }
   onReachBottom() {
     let currentType = this.state.currentType
@@ -128,17 +135,15 @@ class Home extends Component {
         let {audios, i_resource, a_resource, page} = res.data
         this.props.setPlayer({ i_resource, a_resource })
         this.props.saveMusics({ type, page, audios })
-        console.log(this.props.musics)
+        this.props.setPlayer({ list: this.props.musics[type].audios })      
       }
     })
-  }
-  toDetail() {
-    this.props.reduce();
-    this.props.history.push('/detail');
   }
   handleChangeIndex(currentType) {
     this.props.history.replace('/app/music?tab=' + currentType)
     this.p = this.props.musics[currentType].page.p || 1
+    this.props.setPlayer({ list: this.props.musics[currentType].audios })
+    //console.log(this.props.playList)
     this.setState({ currentType }, () => {
       if(this.props.musics[currentType].audios.length === 0){
         this.getList()
@@ -176,6 +181,9 @@ const mapDispatchToProps = dispatch => {
   return {
     setPlayer(player) {
       dispatch({ type: 'setPlayer', player })
+    },
+    setPlaying(playing){
+      dispatch({ type: 'setPlaying', playing })
     },
     setMusics(musics){
       dispatch({ type: 'setMusics', musics })

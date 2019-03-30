@@ -60,8 +60,6 @@ class Lrc extends Component{
   constructor(props){
     super(props)
     this.state = {
-      lrcArr: [],
-      timeArr: [],
       currentLrc: 0,
       currentWidth: 0,
       useTime: 1,
@@ -70,37 +68,37 @@ class Lrc extends Component{
     }
   }
   componentDidMount(){
-    
+
+  }
+  componentWillUnmount(){
+    clearTimeout(this.timer)
   }
   componentWillReceiveProps(){
-    if(this.state.lrcArr.length===0){
-      this.getLrc()
-      return
-    }
-    this.getCurrentLrc()
-  }
-  getLrc(){
-    let { lrcArr, timeArr } = this.props.audio
-    if(lrcArr.length>0){
-      this.setState({ lrcArr, timeArr })
+    if(this.props.audio.lrcArr.length>0){
+      this.getCurrentLrc()
     }
   }
   getCurrentLrc(){
     let { currentTime } = this.props.audio
     let currentLrc = 0;
-    this.state.timeArr.forEach((v,k)=>{
+    this.props.audio.timeArr.forEach((v,k)=>{
       if(currentTime > this.getSecond(v)){
         currentLrc = k
       }
     })
+
+    // 更新当前歌词
     if(currentLrc !== this.state.currentLrc){
       this.setState({ currentLrc, currentWidth: 0 }, () => {
         let showingDom = document.querySelector(`#show-ing`)
         let currentWidth = showingDom.offsetWidth
-        if(currentLrc < this.state.timeArr.length - 1){
-          let useTime = this.getSecond(this.state.timeArr[currentLrc + 1]) - this.getSecond(this.state.timeArr[currentLrc])
+        if(currentLrc < this.props.audio.timeArr.length - 1){
+          let useTime = this.getSecond(this.props.audio.timeArr[currentLrc + 1]) - this.getSecond(this.props.audio.timeArr[currentLrc])
+          // 根据当前的倍速来决定时间
+          useTime = useTime / this.props.player.playbackRate
           if(useTime > 10){
-            this.setState({ useTime: 10, currentLrc: -1 })
+            this.setState({ useTime: 10 })
+            return
           }
           this.setState({ useTime, currentWidth })
         }
@@ -120,12 +118,14 @@ class Lrc extends Component{
     let minS = Number(t.slice(7))
     return minute * 60 + second + minS / 1000
   }
+  // 歌词滚动
   scrollLrc(currentLrc){
     if(currentLrc){
       let listDom = document.querySelector(`.${style.lrcList}`)
       listDom.scrollTop = currentLrc * 32
     }
   }
+  // 滑动歌词调整进度
   handleMove(){
     window.clearTimeout(this.timer)
     this.setState({ userChange: true })
