@@ -15,7 +15,7 @@
   align-items: flex-end;
 }
 .typeItem{
-  transition: all 0.5s;
+  transition: all 0.3s;
   text-align: center;
 }
 .itemShow{
@@ -55,17 +55,22 @@
 }
 
 .item{
+  color: #333;
   padding: 1rem 0.75rem 0.5rem 0.75rem;
   border-top: 1px solid #eee;
   align-items: center;
 }
-.swiperShow .item:first-child{
+.swiper .item:first-child, .swiperShow .item:first-child{
   border: none;
 }
 .item .item_cover{
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
+}
+.item_show{
+  color: #fff;
+  background: url('http://audio.22family.com//gif/playing.gif') 0 0 /cover;
 }
 .item .item_info{
   width: 100%;

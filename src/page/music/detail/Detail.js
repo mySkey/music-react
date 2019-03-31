@@ -36,15 +36,21 @@ class Detail extends Component{
     }
   }
   componentDidMount(){
-    this.id = this.props.location.search ? global.common.getQuery(this.props.location.search).id : 3
-    this.getDetail()
+    this.id = this.props.location.search ? Number(global.common.getQuery(this.props.location.search).id) : 3
+    if(this.id !== this.props.audio.id){
+      this.getDetail()
+    }else{
+      this.updateLrc()
+    }
   }
   componentWillReceiveProps(){
     if(this.props.player.current_music !== this.state.current_music){
       let current_music = this.props.player.current_music
       this.setState({ current_music }, ()=>{
         this.id = this.props.player.list[current_music].id
-        this.getDetail()
+        if(this.id !== this.props.audio.id){
+          this.getDetail()
+        }
       })
     }
   }
@@ -77,12 +83,21 @@ class Detail extends Component{
         let { lrc, id, url, cover, singer, name  } = res.data.audio
         let { timeArr, lrcArr } = global.common.analysis(lrc)
         this.props.setPlaying({id, timeArr, lrcArr, url, singer, name, cover })
-        this.props.setPlayer({ i_resource, a_resource })
+        this.props.setPlayer({ i_resource, a_resource, global_show: 1 })
 
         global.audioDom.src = a_resource + url;
         setTimeout(()=>{
           global.audioDom.play()
         }, 500)
+      }
+    })
+  }
+  updateLrc(){
+    global.ajax.get('lrc', { id: this.id }).then(res => {
+      if (res.code === 0) {
+        let lrc = res.data.lrc
+        let { timeArr, lrcArr } = global.common.analysis(lrc)
+        this.props.setPlaying({timeArr, lrcArr})
       }
     })
   }

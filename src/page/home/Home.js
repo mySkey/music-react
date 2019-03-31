@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import style from './Home.css';
 import { mapStateToProps, mapDispatchToProps } from '@/store/reducer/counter.js'
 import { Route, Redirect, Switch } from 'react-router-dom'
+import AudioPlayer from '@/components/Player.js'
 
 import Music from  '@/page/music/list/List.js'
 import Fm from  '@/page/fm/list/List.js'
@@ -24,6 +25,7 @@ class Home extends Component{
           })
         }
         </div> */}
+        <AudioPlayer></AudioPlayer>
         {
           true ? 
             <Switch>
@@ -68,10 +70,6 @@ class Home extends Component{
   }
   componentWillUnmount(){
 
-  }
-  toDetail(){
-    this.props.reduce();
-    this.props.history.push('/detail');
   }
   handleChangeIndex(index){
     console.log(index)

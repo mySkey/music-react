@@ -89,6 +89,7 @@ class Lrc extends Component{
 
     // 更新当前歌词
     if(currentLrc !== this.state.currentLrc){
+      console.log(this.props.audio.timeArr[currentLrc],this.props.audio.lrcArr[currentLrc])
       this.setState({ currentLrc, currentWidth: 0 }, () => {
         let showingDom = document.querySelector(`#show-ing`)
         let currentWidth = showingDom.offsetWidth
@@ -116,7 +117,7 @@ class Lrc extends Component{
     let minute = Number(t.slice(0,2))
     let second = Number(t.slice(3,5))
     let minS = Number(t.slice(7))
-    return minute * 60 + second + minS / 1000
+    return minS>100 ? (minute * 60 + second + minS / 1000) : (minute * 60 + second + minS / 100)
   }
   // 歌词滚动
   scrollLrc(currentLrc){

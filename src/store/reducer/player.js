@@ -6,12 +6,12 @@ let info = {
   playbackRate: 1,    // 倍速
   a_resource: '',
   i_resource: '',
+  global_show: 0,     // 全局显示  0 不显示 1 显示
   playing: {
     id: '',
     name: '',
     cover: '',
     url: '',
-    rotate: 0,
     singer: {
       avatar: '',
       name: ''

@@ -42,7 +42,7 @@ class Home extends Component {
                   {
                     v.audios.map((e,i)=>{
                       return(
-                        <div  onClick={() => this.toDetail(e,i)} className={[style.item, 'df'].join(' ')} key={i}>
+                        <div  onClick={() => this.toDetail(e,i)} className={[style.item, this.props.playing.id === e.id && this.props.player.status === 1? style.item_show : '', 'df'].join(' ')} key={i}>
                           <img className={style.item_cover} src={this.props.player.i_resource + e.cover + '-cover'} alt='歌曲封面' />
                           <div className={[style.item_info, 'df-1'].join(' ')}>
                             <h3 className={style.item_name}>{e.name}</h3>
@@ -99,17 +99,17 @@ class Home extends Component {
     let currentType = Math.floor(global.common.getQuery(this.props.history.location.search).tab) || 0
     if(this.props.musics[currentType].audios.length === 0){
       this.setState({ currentType }, () => this.getList())
+      return
     }
+    this.setState({ currentType })
   }
 
   dateFormat(t){
     return dayjs(t * 1000).format('YYYY.MM.YY')
   }
   toDetail(e,i){
-    let { id, name, url, singer, cover } = e
     this.props.setPlayer({ current_music: i })
-    this.props.setPlaying({ id, name, url, singer, cover })
-    this.props.history.push('/music/detail?id='+ e.id)
+    this.props.history.push(`/music/detail?id=${e.id}`)
   }
   onReachBottom() {
     let currentType = this.state.currentType
