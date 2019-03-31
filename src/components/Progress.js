@@ -4,9 +4,9 @@ export default class Progress extends Component{
   render(){
     return(
       <div>
-        <div id="swiper" onTouchStart={(e) => this.swiperTouch(e)} style={this.getSwiperStyle()}>
+        <div ref={this.swiperRef} onTouchStart={(e) => this.swiperTouch(e)} style={this.getSwiperStyle()}>
           <div style={this.getLineStyle()}></div>
-          <div id="slider" onTouchStart={(e) => this.touchStart(e)} onTouchMove={(e) => this.touchMove(e)} onTouchEnd={(e) => this.touchEnd(e)} style={this.getSliderStyle()}></div>
+          <div ref={this.sliderRef} onTouchStart={(e) => this.touchStart(e)} onTouchMove={(e) => this.touchMove(e)} onTouchEnd={(e) => this.touchEnd(e)} style={this.getSliderStyle()}></div>
         </div>
       </div>
     )
@@ -18,14 +18,16 @@ export default class Progress extends Component{
       left: 0,
       sliderW: 14
     }
+    this.swiperRef = React.createRef()
+    this.sliderRef = React.createRef()
   }
   componentDidMount(){
 
   }
   componentWillReceiveProps(props){
     if(props.radio){
-      let swiperDom = document.getElementById('swiper')
-      this.setState({ left: swiperDom.offsetWidth * props.radio })
+      let swiperWidth = this.swiperRef.current.offsetWidth
+      this.setState({ left: swiperWidth * props.radio })
     }
   }
   getSwiperStyle(){
@@ -67,30 +69,30 @@ export default class Progress extends Component{
     this.setState({ sliderW: 18 })
   }
   touchMove(e) {
+    let swiperWidth = this.swiperRef.current.offsetWidth
+    let sliderWidth = this.sliderRef.current.offsetWidth
+    let startX = this.swiperRef.current.offsetLeft
     let endX = e.targetTouches[0].clientX
-    let swiperDom = document.getElementById('swiper')
-    let sliderDom = document.getElementById('slider')
-    let startX = swiperDom.offsetLeft
     if (endX - startX <= 0){
       this.setState({ left: 0 })
       return
     }
-    if (endX - startX >= (swiperDom.offsetWidth - sliderDom.offsetWidth)){
-      this.setState({ left: swiperDom.offsetWidth - sliderDom.offsetWidth })
+    if (endX - startX >= (swiperWidth - sliderWidth)){
+      this.setState({ left: swiperWidth - sliderWidth })
       return
     }
     this.setState({ left: endX - startX })
   }
   touchEnd() {
-    let swiperDom = document.getElementById('swiper')
+    let swiperWidth = this.swiperRef.current.offsetWidth
     this.setState({ sliderW: 12 })
-    this.props.changeProgress(this.state.left / swiperDom.offsetWidth)
+    this.props.changeProgress(this.state.left / swiperWidth)
   }
   swiperTouch(e) {
-    let swiperDom = document.getElementById('swiper')
+    let swiperWidth = this.swiperRef.current.offsetWidth
+    let startX = this.swiperRef.current.offsetLeft
     let endX = e.targetTouches[0].clientX
-    let startX = swiperDom.offsetLeft
     this.setState({ left: endX - startX })
-    this.props.changeProgress((endX - startX) / swiperDom.offsetWidth)
+    this.props.changeProgress((endX - startX) / swiperWidth)
   }
 }

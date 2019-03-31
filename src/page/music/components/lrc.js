@@ -7,7 +7,7 @@ class Lrc extends Component{
   render(){
     return(
       <div className={style.lrc_container}>
-        <ul onTouchMove={this.handleMove.bind(this)} className={[style.lrcList, 'df-col'].join(' ')}>
+        <ul ref={this.listRef} onTouchMove={this.handleMove.bind(this)} className={[style.lrcList, 'df-col'].join(' ')}>
           {
             this.props.audio.lrcArr.map((v, k) => {
               return (
@@ -39,7 +39,7 @@ class Lrc extends Component{
     if (this.state.currentLrc === k) {
       return (
         <div>
-          <div id='show-ing' className={style.lrcItemShow}>{v}</div>
+          <div ref={this.showingRef} className={style.lrcItemShow}>{v}</div>
           <div style={this.getItemShowStyle()} className={style.lrcItemShowIng}>{v}</div>
         </div>
       )
@@ -66,6 +66,8 @@ class Lrc extends Component{
       userChange: false,
       changeTo: 0
     }
+    this.listRef = React.createRef()
+    this.showingRef = React.createRef()
   }
   componentDidMount(){
 
@@ -89,10 +91,8 @@ class Lrc extends Component{
 
     // 更新当前歌词
     if(currentLrc !== this.state.currentLrc){
-      console.log(this.props.audio.timeArr[currentLrc],this.props.audio.lrcArr[currentLrc])
       this.setState({ currentLrc, currentWidth: 0 }, () => {
-        let showingDom = document.querySelector(`#show-ing`)
-        let currentWidth = showingDom.offsetWidth
+        let currentWidth = this.showingRef.current.offsetWidth
         if(currentLrc < this.props.audio.timeArr.length - 1){
           let useTime = this.getSecond(this.props.audio.timeArr[currentLrc + 1]) - this.getSecond(this.props.audio.timeArr[currentLrc])
           // 根据当前的倍速来决定时间
@@ -108,8 +108,7 @@ class Lrc extends Component{
         this.scrollLrc(currentLrc)
       }
     }else{
-      let showingDom = document.querySelector(`#show-ing`)
-      let currentWidth = showingDom.offsetWidth
+      let currentWidth = this.showingRef.current.offsetWidth
       this.setState({ currentWidth })
     }
   }
@@ -122,8 +121,7 @@ class Lrc extends Component{
   // 歌词滚动
   scrollLrc(currentLrc){
     if(currentLrc){
-      let listDom = document.querySelector(`.${style.lrcList}`)
-      listDom.scrollTop = currentLrc * 32
+      this.listRef.current.scrollTop = currentLrc * 32
     }
   }
   // 滑动歌词调整进度
@@ -134,8 +132,7 @@ class Lrc extends Component{
       this.setState({ userChange: false })
     }, 5000)
 
-    let listDom = document.querySelector(`.${style.lrcList}`)
-    let currentLrc = Math.round(listDom.scrollTop / 32)
+    let currentLrc = Math.round(this.listRef.current.scrollTop / 32)
     let time = this.props.audio.timeArr[currentLrc]
     let currentTime = Math.ceil(this.getSecond(time))
     this.setState({ changeTo: currentTime })

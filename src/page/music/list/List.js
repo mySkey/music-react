@@ -101,7 +101,14 @@ class Home extends Component {
       this.setState({ currentType }, () => this.getList())
       return
     }
-    this.setState({ currentType })
+    this.setState({ currentType }, ()=>{
+      if(this.props.player.current_music > 2){
+        window.scrollTo({
+          top: (this.props.player.current_music - 2) * 120,
+          behavior: "smooth" 
+        })
+      }
+    })
   }
 
   dateFormat(t){
