@@ -1,4 +1,4 @@
-let api_url = process.env.NODE_ENV ==='development' ? '//192.168.1.103:9000/ph/' : '//api.22family.com/ph/'
+let api_url = process.env.NODE_ENV ==='development' ? '//192.168.1.103:9000/ph/' : '//www.22family.com/music/ph/'
 let ajax = (obj) => {
   let url = obj.url;
   let type = obj.type.toUpperCase() || 'GET';
