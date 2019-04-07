@@ -56,7 +56,7 @@
 .swiper .line{
   width: 70%;
   height: 1px;
-  background: radial-gradient(at 50% 0, transparent, transparent, rgba(252, 231, 231, 0.5));
+  background: radial-gradient(at 50% 0, transparent, transparent, #fff, #fff);
 }
 .swiper .play i{
   font-size: 1rem;
