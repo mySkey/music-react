@@ -1,3 +1,8 @@
+### 扫码预览
+
+<div align=center><img src="http://img.22family.com/mySKey/music-react.jpg" /></div>
+
+
 ### 1.安装环境
 * npm install -g create-react-app
 
