@@ -1,6 +1,6 @@
 ### 扫码预览
 
-<div align=center><img src="http://img.22family.com/mySKey/music-react.jpg" /></div>
+<div align=center><img src="http://img.22family.com/mySKey/music-react.png" /></div>
 
 
 ### 1.安装环境
